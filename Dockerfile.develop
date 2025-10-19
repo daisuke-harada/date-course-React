@@ -9,4 +9,10 @@ WORKDIR $APP_PATH
 COPY package.json $APP_PATH/package.json
 COPY yarn.lock $APP_PATH/yarn.lock
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
+
+COPY docker-entrypoint.sh $APP_PATH/docker-entrypoint.sh
+RUN chmod +x $APP_PATH/docker-entrypoint.sh
+
+ENTRYPOINT ["/bin/sh", "./docker-entrypoint.sh"]
+CMD ["yarn", "start"]

@@ -15,7 +15,6 @@
     "@vis.gl/react-google-maps": "^1.1.0",
     "axios": "^1.7.2",
     "axios-case-converter": "^1.1.1",
-    "eslint": "^9.4.0",
     "glob": "^10.4.1",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
@@ -67,5 +66,9 @@
     "postcss": "^8.4.38",
     "tailwind-styled-components": "^2.1.4",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+    ,"eslint": "^8.50.0",
+    "@babel/plugin-syntax-flow": "^7.22.0",
+    "@babel/plugin-transform-react-jsx": "^7.22.0",
+    "webpack": "^5.91.0"
   }
 }

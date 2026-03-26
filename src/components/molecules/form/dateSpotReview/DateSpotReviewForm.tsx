@@ -1,18 +1,18 @@
-import { memo, FC, useState, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { client } from 'lib/api/client';
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
-import { DateSpotReviewAndUserResponseData } from 'types/dateSpotReviews/response';
 import { DangerButton } from 'components/atoms/button/DangerButton';
+import { DateSpotReviewAndUserResponseData } from 'types/dateSpotReviews/response';
+import { RootState } from 'reducers';
 import { SecondaryButton } from 'components/atoms/button/SecondaryButton';
 import { StarRateForm } from 'components/atoms/form/StarRateForm';
 import { StarRateText } from 'components/atoms/text/StarRateText';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
+import { client } from 'lib/api/client';
+import tw from 'tailwind-styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 type DateSpotRreviewParam = {
   rate: number,
@@ -40,8 +40,7 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
   const [content, setContent] = useState<string>('');
   const [rate, setRate] = useState<number>(0);
   const [editOpen, setEditOpen] = useState<boolean>(false);
-  const [errorUserIdMessages, setErrorUserIdMessages] = useState([]);
-  const [errorContentMessages, setErrorContentMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [currentDateSpotReview, setCurrentDateSpotReview] = useState<DateSpotReviewAndUserResponseData | undefined>();
   const onChangeContent: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback((e) => setContent(e.target.value), []);
   const onChangeRate: (new_rating: number) => void = useCallback((new_rating) => setRate(new_rating), []);
@@ -60,13 +59,10 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
       setContent('');
       setRate(0);
       setDateSpotAverageRate(response.data.reviewAverageRate);
-      setErrorUserIdMessages([]);
-      setErrorContentMessages([]);
+      setErrorMessages([]);
       navigate(`./`, {state: {message: 'コメントを投稿しました', type: 'success-message', condition: true}});
     }).catch(error => {
-      const {userId, content} = error.response.data.errorMessages;
-      userId !== undefined && setErrorUserIdMessages(userId);
-      content !== undefined && setErrorContentMessages(content);
+      setErrorMessages(error.response.data.errorMessages);
       navigate(`./`, {state: {message: '登録に失敗しました。', type: 'error-message', condition: true}});
     });
   };
@@ -79,14 +75,11 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
       setContent('');
       setRate(0);
       setDateSpotAverageRate(response.data.reviewAverageRate);
-      setErrorUserIdMessages([]);
-      setErrorContentMessages([]);
+      setErrorMessages([]);
       navigate(`./`, {state: {message: 'コメントを更新しました', type: 'success-message', condition: true}});
       setEditOpen(false);
     }).catch(error => {
-      const {userId, content} = error.response.data.errorMessages;
-      userId !== undefined && setErrorUserIdMessages(userId);
-      content !== undefined && setErrorContentMessages(content);
+      setErrorMessages(error.response.data.errorMessages);
       navigate(`./`, {state: {message: '登録に失敗しました。', type: 'error-message', condition: true}});
     });
   };
@@ -101,8 +94,7 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
       response.status === 200 && setContent('');
       response.status === 200 && setRate(0);
       response.status === 200 && setDateSpotAverageRate(response.data.reviewAverageRate);
-      response.status === 200 && setErrorUserIdMessages([]);
-      response.status === 200 && setErrorContentMessages([]);
+      response.status === 200 && setErrorMessages([]);
       response.status === 200 && setCurrentDateSpotReview(undefined);
       response.status === 200 && setEditOpen(false);
     });
@@ -133,14 +125,9 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
               (
                 <>
                   <StarRateForm rate={rate} size={30} onChangeRate={onChangeRate} edit={true} />
-                  {errorUserIdMessages.length > 0 &&
+                  {errorMessages.length > 0 &&
                     <ul className='mt-1'>
-                      {errorUserIdMessages.map((message)=><li className='text-red-500'>{message}</li>)}
-                    </ul>
-                  }
-                  {errorContentMessages.length > 0 &&
-                    <ul>
-                      {errorContentMessages.map((message)=><li className='text-red-500'>コメントは{message}</li>)}
+                      {errorMessages.map((message) => <li key={message} className='text-red-500'>{message}</li>)}
                     </ul>
                   }
                   <TextArea data-e2e='dateSpotReview-comment-input' placeholder='コメントを入力' value={content} onChange={onChangeContent} />
@@ -179,14 +166,9 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
         <UserInfoDiv>
           <div>{currentUser.name}</div>
           <StarRateForm rate={rate} size={30} onChangeRate={onChangeRate} edit={true} />
-          {errorUserIdMessages.length > 0 &&
+          {errorMessages.length > 0 &&
             <ul className='mt-1'>
-              {errorUserIdMessages.map((message)=><li className='text-red-500'>{message}</li>)}
-            </ul>
-          }
-          {errorContentMessages.length > 0 &&
-            <ul>
-              {errorContentMessages.map((message)=><li className='text-red-500'>コメントは{message}</li>)}
+              {errorMessages.map((message) => <li key={message} className='text-red-500'>{message}</li>)}
             </ul>
           }
           <TextArea data-e2e='dateSpotReview-comment-input' placeholder='コメントを入力' value={content} onChange={onChangeContent} />

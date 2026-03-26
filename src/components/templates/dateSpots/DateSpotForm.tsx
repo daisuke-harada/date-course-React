@@ -1,15 +1,15 @@
-import { memo, useCallback, useState, FC } from 'react';
-import tw from 'tailwind-styled-components';
+import { FC, memo, useCallback, useState } from 'react';
+import { client, formDataClient } from 'lib/api/client';
 
-import { PrefectureSelect } from 'components/molecules/select/dateSpots/PrefectureSelect';
-import { GenreSelect } from 'components/molecules/select/dateSpots/GenreSelect';
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { BusinessTimeSelectArea } from 'components/molecules/select/dateSpots/BusinessTimeSelectArea';
-import { ImageForm } from 'components/atoms/form/ImageForm';
-import { client, formDataClient } from 'lib/api/client';
-import { useNavigate } from 'react-router-dom';
 import { DangerButton } from 'components/atoms/button/DangerButton';
+import { GenreSelect } from 'components/molecules/select/dateSpots/GenreSelect';
+import { ImageForm } from 'components/atoms/form/ImageForm';
+import { PrefectureSelect } from 'components/molecules/select/dateSpots/PrefectureSelect';
 import { prefectureDatas } from 'datas/prefectureDatas';
+import tw from 'tailwind-styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const MainDiv = tw.div`xl:w-1/3 lg:w-1/2 mobile(L):mt-10 mobile(M):w-5/6 mobile(M):mx-auto w-full mx-1 mt-10  mobile(L):text-base mobile(M):text-sm text-xs mobile(L):px-5 px-1 pt-2  flex flex-col items-center bg-white shadow-lg border-gray-900 rounded-3xl`;
 const Title = tw.h1`sm:text-3xl text-center font-bold text-xl m-5`;
@@ -48,10 +48,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
   const navigate = useNavigate();
 
   // エラーメッセージ用のステート
-  const [errorNameMessages, setErrorNameMessages] = useState([]);
-  const [errorGenreIdMessages, setErrorGenreIdMessages] = useState([]);
-  const [errorAddressCityName, setErrorAddressCityName] = useState([]);
-  const [errorAddressPrefectureId, setErrorAddressPrefectureId] = useState([]);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [name, setName] = useState<string>(nameDefaultValue);
   const [prefectureValue, setPrefectureValue] = useState<string >(prefectureDatas.find((data) => (data.name === prefectureDefaultValue))?.id.toString() || '');
   const [cityName, setCityName] = useState<string>(cityNameDefaultValue);
@@ -93,11 +90,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
       navigate(`/dateSpots/${response.data.dateSpotId}`,  {state: {message: '新規登録に成功しました', type: 'success-message', condition: true}});
     })
     .catch(error => {
-      const { name, genreId, addressCityName, addressPrefectureId } = error.response.data.errorMessages;
-      name !== undefined && setErrorNameMessages(name);
-      genreId !== undefined && setErrorGenreIdMessages(genreId);
-      addressCityName !== undefined && setErrorAddressCityName(addressCityName);
-      addressPrefectureId !== undefined && setErrorAddressPrefectureId(addressPrefectureId);
+      setErrorMessages(error.response.data.errorMessages);
     })
   };
 
@@ -106,11 +99,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
       console.log(response)
       navigate(`/dateSpots/${response.data.dateSpotId}`,  {state: {message: '情報を更新しました', type: 'success-message', condition: true}});
     }).catch(error => {
-      const { name, genreId, addressCityName, addressPrefectureId } = error.response.data.errorMessages;
-      name !== undefined && setErrorNameMessages(name);
-      genreId !== undefined && setErrorGenreIdMessages(genreId);
-      addressCityName !== undefined && setErrorAddressCityName(addressCityName);
-      addressPrefectureId !== undefined && setErrorAddressPrefectureId(addressPrefectureId);
+      setErrorMessages(error.response.data.errorMessages);
     });
   };
 
@@ -142,16 +131,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
       <Title>{dateSpotFormTitle}</Title>
       {/* エラーメッセージ  */}
       <ul className='mt-5'>
-        {errorNameMessages.map((message)=><li className='text-red-500'>名前は{message}</li>)}
-      </ul>
-      <ul>
-        {errorGenreIdMessages.map((message)=><li className='text-red-500'>ジャンルは{message}</li>)}
-      </ul>
-      <ul>
-        {errorAddressPrefectureId.map((message)=><li className='text-red-500'>県名は{message}</li>)}
-      </ul>
-      <ul>
-        {errorAddressCityName.map((message)=><li className='text-red-500'>市町村名、番地は{message}</li>)}
+        {errorMessages.map((message) => <li key={message} className='text-red-500'>{message}</li>)}
       </ul>
 
       <SubDiv>

@@ -1,12 +1,12 @@
-import { memo, useCallback, FC } from 'react';
-import tw from 'tailwind-styled-components';
-import { useNavigate } from 'react-router-dom';
+import { CourseInfoData, ManagementCourseData } from 'types/managementCourses/management';
+import { FC, memo, useCallback } from 'react';
 
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { DangerButton } from 'components/atoms/button/DangerButton';
-import { CourseInfoData, ManagementCourseData } from 'types/managementCourses/management';
-import { useCourseReset } from 'hooks/managementCourses/useCourseReset';
 import { client } from 'lib/api/client';
+import tw from 'tailwind-styled-components';
+import { useCourseReset } from 'hooks/managementCourses/useCourseReset';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   managementCourse: ManagementCourseData,
@@ -42,7 +42,7 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
       response.status === 201 && resetmanagementCourse();
       response.status === 201 && resetCourseInfo();
     }).catch(error => {
-      navigate(`./`, {state: {message: error.response.data.error_messages, type: 'error-message', condition: true}});
+      navigate(`./`, {state: {message: error.response.data.errorMessages, type: 'error-message', condition: true}});
     });
   }, [ managementCourse, getCourseInfo, resetCourseInfo, resetmanagementCourse, navigate ]);
 

@@ -1,16 +1,16 @@
-import { memo, useCallback, useState, FC } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { formDataClient } from 'lib/api/client';
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { RadioArea } from 'components/organisms/area/RadioArea';
 import { DeactivateAcountButton } from 'components/atoms/button/users/DeactivateAcountButton';
 import { ImageForm } from 'components/atoms/form/ImageForm';
-import { useDispatch, useSelector } from 'react-redux';
+import { RadioArea } from 'components/organisms/area/RadioArea';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { formDataClient } from 'lib/api/client';
 import { setCurrentUser } from 'reducers/loginSlice';
+import tw from 'tailwind-styled-components';
 
 type Props = {
   nameDefaultValue: string,
@@ -32,9 +32,7 @@ export const UserForm: FC<Props> = memo((props) => {
   const {nameDefaultValue, emailDefaultValue, genderDefaultValue,imageDefaultValue, userFormTitle, buttonName, afterLoginSuccess } = props;
 
   // エラーメッセージ用のステート
-  const [errorNameMessages, setErrorNameMessages] = useState([]);
-  const [errorEmailMessages, setErrorEmailMessages] = useState([]);
-  const [errorPasswordMessages, setErrorPasswordMessages] = useState([]);
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -81,11 +79,7 @@ export const UserForm: FC<Props> = memo((props) => {
       formDataClient.post('signup', user).then(response => {
         afterLoginSuccess !== undefined && afterLoginSuccess(response.data.user);
       }).catch(error => {
-        const {password, name, email} = error.response.data.errorMessages
-        // エラーメッセージをセットする。
-        name !== undefined && setErrorNameMessages(name);
-        email !== undefined && setErrorEmailMessages(email);
-        password !== undefined && setErrorPasswordMessages(password);
+        setErrorMessages(error.response.data.errorMessages);
         navigate(`./`, {state: {message: '登録に失敗しました。', type: 'error-message', condition: true}});
       });
     // ユーザー編集機能の挙動。
@@ -100,12 +94,7 @@ export const UserForm: FC<Props> = memo((props) => {
             // 画面遷移
             navigate(`/users/${response.data.id}`, {state: {message: '情報を更新しました', type: 'success-message', condition: true}});
         }).catch(error => {
-          // 新規登録失敗
-          const {password, name, email} = error.response.data.errorMessages
-          // エラーメッセージをセットする。
-          name !== undefined && setErrorNameMessages(name);
-          email !== undefined && setErrorEmailMessages(email);
-          password !== undefined && setErrorPasswordMessages(password);
+          setErrorMessages(error.response.data.errorMessages);
           navigate(`./`, {state: {message: '更新に失敗しました。', type: 'error-message', condition: true}});
         });
       };
@@ -118,13 +107,7 @@ export const UserForm: FC<Props> = memo((props) => {
     <MainDiv>
       <Title>{userFormTitle}</Title>
       <ul className='mt-5'>
-        {errorNameMessages.map((message)=><li className='text-red-500'>名前は{message}</li>)}
-      </ul>
-      <ul>
-        {errorEmailMessages.map((message)=><li className='text-red-500'>メールは{message}</li>)}
-      </ul>
-      <ul>
-        {errorPasswordMessages.map((message)=><li className='text-red-500'>パスワードは{message}</li>)}
+        {errorMessages.map((message) => <li key={message} className='text-red-500'>{message}</li>)}
       </ul>
       <Form onSubmit={userRegitAction}>
         <Input data-e2e='user-form-name-input' placeholder='名前を入力' value={name} onChange={onChangeName} />

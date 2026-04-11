@@ -29,7 +29,7 @@ export const AddCourseButton: FC<Props> = memo((props) => {
     if(managementCourse.userId === 0){
       dispatch(setManagementCourse({userId: currentUser.id, dateSpots: [addressAndDateSpot]}))
       navigate('/managementCourse/createCourse');
-    } else if(managementCourse.dateSpots.some(spot => spot.dateSpot.id === addressAndDateSpot.dateSpot.id)){
+    } else if(managementCourse.dateSpots.some(spot => spot.id === addressAndDateSpot.id)){
       navigate('./', {state: {message: 'このスポットはすでに選択されています', type: 'error-message', condition: true}});
     } else {
       const dateCourseIdAndNames = managementCourse.dateSpots.slice();
@@ -47,7 +47,7 @@ export const AddCourseButton: FC<Props> = memo((props) => {
         &&
         (
         <ButtonParentDiv>
-          <BaseButton dataE2e={`courseAddButtonId-${addressAndDateSpot.dateSpot.id}`} onClickEvent={onClickAddCourseAction}>デートコースに追加</BaseButton>
+          <BaseButton dataE2e={`courseAddButtonId-${addressAndDateSpot.id}`} onClickEvent={onClickAddCourseAction}>デートコースに追加</BaseButton>
         </ButtonParentDiv>
         )
       }

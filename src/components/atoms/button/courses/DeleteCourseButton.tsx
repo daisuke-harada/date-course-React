@@ -33,7 +33,7 @@ export const DeleteCourseButton: FC<Props> = memo((props) => {
 
   return(
     <ButtonParentDiv>
-       <DangerButton dataE2e={`courseDeleteButtonId-${addressAndDateSpot.dateSpot.id}`} onClickEvent={onClickDeleteCourseAction}>コースを削除</DangerButton>
+       <DangerButton dataE2e={`courseDeleteButtonId-${addressAndDateSpot.id}`} onClickEvent={onClickDeleteCourseAction}>コースを削除</DangerButton>
     </ButtonParentDiv>
   );
 });

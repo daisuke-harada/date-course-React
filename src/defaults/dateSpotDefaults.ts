@@ -26,12 +26,18 @@ export const initialAddress: AddressResponseData = {
 
 export const initialAddressAndDateSpotJoin: AddressAndDateSpotJoinData = {
   id: 0,
+  name: '',
+  genreId: 0,
+  image: { url: null },
+  openingTime: undefined,
+  closingTime: undefined,
+  createdAt: new Date(),
+  updatedAt: new Date(),
   cityName: '',
   prefectureName: '',
-  dateSpot: initialDateSpot,
-  genreName: '',
   latitude: 0,
   longitude: 0,
+  genreName: '',
   reviewTotalNumber: 0,
   averageRate: 0,
 };

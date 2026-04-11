@@ -39,7 +39,7 @@ export const Show: FC = memo(() => {
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {
       setAddressAndDateSpot(response.data.addressAndDateSpot);
-      response.data.addressAndDateSpot.dateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.dateSpot.image.url);
+      response.data.addressAndDateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.image.url);
       setDateSpotReviews(response.data.dateSpotReviews);
       setDateSpotAverageRate(response.data.reviewAverageRate);
     });
@@ -53,17 +53,17 @@ export const Show: FC = memo(() => {
             <ImageParentDiv>
               <Image src={dateSpotImage} alt='DateSpotProfileImage' />
             </ImageParentDiv>
-            <DateSpotNameTitle>{addressAndDateSpot?.dateSpot.name}</DateSpotNameTitle>
+            <DateSpotNameTitle>{addressAndDateSpot?.name}</DateSpotNameTitle>
             <div className='flex flex-col'>
               <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
               <StarRateText rate={dateSpotAverageRate} size={50} />
             </div>
-            <BusinessHour openingTime={addressAndDateSpot?.dateSpot.openingTime} closingTime={addressAndDateSpot?.dateSpot.closingTime} />
+            <BusinessHour openingTime={addressAndDateSpot?.openingTime} closingTime={addressAndDateSpot?.closingTime} />
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
               {addressAndDateSpot?.cityName}
             </div>
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
-              <Link to={`/genres/${addressAndDateSpot?.dateSpot.genreId}`}>
+              <Link to={`/genres/${addressAndDateSpot?.genreId}`}>
                 {addressAndDateSpot?.genreName}
               </Link>
             </div>
@@ -103,7 +103,7 @@ export const Show: FC = memo(() => {
           addressAndDateSpot
           &&
           <DateSpotReviewArea
-            dateSpotId={addressAndDateSpot.dateSpot.id}
+            dateSpotId={addressAndDateSpot.id}
             dateSpotReviews={dateSpotReviews}
             setDateSpotReviews={setDateSpotReviews}
             setDateSpotAverageRate={setDateSpotAverageRate}

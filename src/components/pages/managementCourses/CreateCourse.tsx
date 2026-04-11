@@ -2,7 +2,6 @@ import { CourseDuringSpotCard } from 'components/organisms/card/managementCourse
 import { memo, useEffect, useState, FC } from 'react';
 import { useSelector } from 'react-redux';
 import tw from 'tailwind-styled-components';
-
 import { Directions } from 'components/molecules/maps/Directions';
 
 import { GoogleMap } from 'components/molecules/maps/GoogleMap';
@@ -13,7 +12,7 @@ import { BaseButton } from 'components/atoms/button/BaseButton';
 import { SecondaryButton } from 'components/atoms/button/SecondaryButton';
 import { RootState } from 'reducers';
 import { CourseInfoData, ManagementCourseData } from 'types/managementCourses/management';
-import { AddressAndDateSpotJoinData, DateSpotResponseData } from 'types/dateSpots/response';
+import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 
 const MainDiv = tw.div`md:mx-20 mx-2 px-2 bg-white mt-10 py-5 shadow-xl rounded-2xl`;
 const CourseNotExistDiv = tw.div`text-center sm:text-2xl m-auto my-5 text-blue-600 mobile(L):text-lg text-sm`;
@@ -76,7 +75,7 @@ export const CreateCourse: FC = memo(() => {
                   {
                     managementCourse.dateSpots.map((courseDuringSpot, index) => (
                       <CourseDuringSpotCard
-                        key={courseDuringSpot.dateSpot.id}
+                        key={courseDuringSpot.id}
                         courseDuringSpot={courseDuringSpot}
                         managementCourse={managementCourse}
                         courseNumber={index}

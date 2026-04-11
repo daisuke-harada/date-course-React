@@ -16,14 +16,14 @@ export const DuringSpotCard: FC<Props> = memo((props) => {
   const [ duringSpotImage, setDuringSpotImage] = useState(noImage);
 
   useEffect(() => {
-    duringSpot.dateSpot.image && duringSpot.dateSpot.image.url && setDuringSpotImage(duringSpot.dateSpot.image.url);
+    duringSpot.image && duringSpot.image.url && setDuringSpotImage(duringSpot.image.url);
   }, [duringSpot]);
 
   return(
-      <Link className='bg-white rounded-xl shadow-xl m-1 mobile(M):w-24 w-20 hover:scale-105 duration-75' to={`/dateSpots/${duringSpot.dateSpot.id}`}>
+      <Link className='bg-white rounded-xl shadow-xl m-1 mobile(M):w-24 w-20 hover:scale-105 duration-75' to={`/dateSpots/${duringSpot.id}`}>
         <Image src={duringSpotImage} alt='DateSpotProfileImage' />
         <div className='sm:block text-center text-xs font-bold overflow-x-scroll whitespace-nowrap pb-3 mobile(M):w-24 w-20'>
-            <div className='my-2'>{duringSpot.dateSpot.name}</div>
+            <div className='my-2'>{duringSpot.name}</div>
         </div>
       </Link>
   );

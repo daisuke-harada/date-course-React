@@ -68,7 +68,7 @@ export const DateSpotRanking: FC<Props> = memo((props) => {
                   </NumberDiv>
                 }
               </span>
-              <DateSpotCard key={addressAndDateSpot.dateSpot.id} addressAndDateSpot={addressAndDateSpot} />
+              <DateSpotCard key={addressAndDateSpot.id} addressAndDateSpot={addressAndDateSpot} />
             </div>
           ))
         }

@@ -22,28 +22,25 @@ export const ChangeSelect: FC<Props> = memo((props) => {
   const onChangeCourseIdValue: React.ChangeEventHandler<HTMLSelectElement> = useCallback((e) => setChangeCourseId(Number(e.target.value)), []);
 
   const onClickCourseChange = useCallback(() => {
-    const dateSpotIdAndName = (dateSpotId: number) => (managementCourse.dateSpots.find(courseDuringSpot => courseDuringSpot.dateSpot.id === dateSpotId));
+    const dateSpotIdAndName = (dateSpotId: number) => (managementCourse.dateSpots.find(courseDuringSpot => courseDuringSpot.id === dateSpotId));
     const dateSpotIndex = (addressAndDateSpot: AddressAndDateSpotJoinData) => (managementCourse.dateSpots.indexOf(addressAndDateSpot));
     const copymanagementCourse = managementCourse.dateSpots.slice();
     const currentDateSpot = dateSpotIdAndName(currentDateSpotId) || {
       id: 0,
+      name: '',
+      genreId: 0,
+      image: {
+        url: null
+      },
+      openingTime: new Date('2022/11/02'),
+      closingTime: new Date('2022/11/02'),
+      createdAt: new Date('2022/11/02'),
+      updatedAt: new Date('2022/11/02'),
       cityName: '',
       prefectureName: '',
-      dateSpot: {
-        id: 0,
-        name: '',
-        genreId: 0,
-        image: {
-          url: null
-        },
-        openingTime: new Date('2022/11/02'),
-        closingTime: new Date('2022/11/02'),
-        createdAt: new Date('2022/11/02'),
-        updatedAt: new Date('2022/11/02'),
-      },
-      genreName: '',
       latitude: 0,
       longitude: 0,
+      genreName: '',
       reviewTotalNumber: 0,
       averageRate: 0,
     };
@@ -79,11 +76,11 @@ export const ChangeSelect: FC<Props> = memo((props) => {
         <select data-e2e={`spot-change-select-${currentDateSpotId}`} className='mb-2 border-2 rounded-md font-bold' onChange={onChangeCourseIdValue}>
           <option value='0'>入れ替え対象を選択</option>
           {managementCourse.dateSpots
-            .filter(courseDuringSpot => courseDuringSpot.dateSpot.id !== currentDateSpotId)
+            .filter(courseDuringSpot => courseDuringSpot.id !== currentDateSpotId)
             .map((courseDuringSpot) => {
             return(
-              <option key={courseDuringSpot.dateSpot.id} value={courseDuringSpot.dateSpot.id.toString()} >
-                {courseDuringSpot.dateSpot.name}
+              <option key={courseDuringSpot.id} value={courseDuringSpot.id.toString()} >
+                {courseDuringSpot.name}
               </option>
             )
           })}

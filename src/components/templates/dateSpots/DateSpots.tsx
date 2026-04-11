@@ -1,9 +1,9 @@
-import { memo, FC } from 'react';
+import { FC, memo } from 'react';
 
+import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { DateSpotCard } from 'components/organisms/card/dateSpots/DateSpotCard';
 import { DateSpotRanking } from 'components/organisms/rankings/DateSpotRanking';
 import { Loading } from 'components/pages/Loading';
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 
 type Props = {
   addressAndDateSpots: AddressAndDateSpotJoinData[],

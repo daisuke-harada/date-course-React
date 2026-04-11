@@ -1,12 +1,12 @@
-import { memo, useEffect, useState, FC } from 'react';
-import tw from 'tailwind-styled-components';
-import { Link } from 'react-router-dom';
+import { FC, memo, useEffect, useState } from 'react';
 
-import { StarRateText } from 'components/atoms/text/StarRateText';
 import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton';
-import { Card } from 'components/atoms/card/Card';
 import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { Card } from 'components/atoms/card/Card';
+import { Link } from 'react-router-dom';
+import { StarRateText } from 'components/atoms/text/StarRateText';
 import { genreDatas } from 'datas/genreDatas';
+import tw from 'tailwind-styled-components';
 
 type Props = {
   addressAndDateSpot: AddressAndDateSpotJoinData

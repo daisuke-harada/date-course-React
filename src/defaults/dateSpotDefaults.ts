@@ -1,4 +1,4 @@
-import { DateSpotResponseData, AddressResponseData, AddressAndDateSpotJoinData } from "types/dateSpots/response";
+import { AddressAndDateSpotJoinData, AddressResponseData, DateSpotResponseData } from "types/dateSpots/response";
 
 export const initialDateSpot: DateSpotResponseData = {
   id: 0,

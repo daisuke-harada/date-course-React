@@ -1,13 +1,12 @@
-import { memo, useCallback, useState, FC } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
-import { ManagementCourseData } from 'types/managementCourses/management';
 import { BaseButton } from 'components/atoms/button/BaseButton';
+import { ManagementCourseData } from 'types/managementCourses/management';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
 import { setManagementCourse } from 'reducers/currentDateCourseSlice';
-
 
 type Props = {
   currentDateSpotId: number,

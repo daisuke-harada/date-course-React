@@ -1,8 +1,8 @@
 import { FC, memo, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { BaseButton } from 'components/atoms/button/BaseButton';
+import { DateSpotData } from 'types/dateSpots/response';
 import { ManagementCourseData } from 'types/managementCourses/management';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
@@ -22,7 +22,7 @@ export const ChangeSelect: FC<Props> = memo((props) => {
 
   const onClickCourseChange = useCallback(() => {
     const dateSpotIdAndName = (dateSpotId: number) => (managementCourse.dateSpots.find(courseDuringSpot => courseDuringSpot.id === dateSpotId));
-    const dateSpotIndex = (addressAndDateSpot: AddressAndDateSpotJoinData) => (managementCourse.dateSpots.indexOf(addressAndDateSpot));
+    const dateSpotIndex = (dateSpot: DateSpotData) => (managementCourse.dateSpots.indexOf(dateSpot));
     const copymanagementCourse = managementCourse.dateSpots.slice();
     const currentDateSpot = dateSpotIdAndName(currentDateSpotId) || {
       id: 0,

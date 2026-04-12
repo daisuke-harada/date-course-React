@@ -1,17 +1,17 @@
 import { FC, memo, useEffect, useState } from 'react';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotNameSearchBar } from 'components/organisms/searchs/DateSpotNameSearchBar';
 import { DateSpotSortSearchBar } from 'components/organisms/searchs/DateSpotSortSearchBar';
 import { DateSpots } from 'components/templates/dateSpots/DateSpots';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { MultiBar } from 'components/organisms/searchs/MultiBar';
 import { client } from 'lib/api/client';
-import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
+import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { useSearchParams } from 'react-router-dom';
 
 export const Index: FC = memo(() => {
-  const [addressAndDateSpots, setAddressAndDateSpots] = useState<AddressAndDateSpotJoinData[]>([defaultAddressAndDateSpotJoinData]);
+  const [dateSpots, setDateSpots] = useState<DateSpotData[]>([defaultDateSpot]);
   const [searchParams] = useSearchParams();
 
   const prefectureId = searchParams.get('prefecture_id') || '';
@@ -27,7 +27,7 @@ export const Index: FC = memo(() => {
     if (dateSpotSearchName) params.date_spot_name = dateSpotSearchName;
 
     client.get('date_spots', { params }).then(response => {
-      setAddressAndDateSpots(response.data);
+      setDateSpots(response.data);
     });
   }, [prefectureId, genreId, comeTime, dateSpotSearchName]);
 
@@ -55,7 +55,7 @@ export const Index: FC = memo(() => {
           defaultComeTime={comeTime}
         />
       }
-      mainArea={<DateSpots addressAndDateSpots={addressAndDateSpots} prefectureId={prefectureId} genreId={genreId} comeTime={comeTime} dateSpotSearchName={dateSpotSearchName} />}
+      mainArea={<DateSpots dateSpots={dateSpots} prefectureId={prefectureId} genreId={genreId} comeTime={comeTime} dateSpotSearchName={dateSpotSearchName} />}
     />
   );
 });

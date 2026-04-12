@@ -1,11 +1,11 @@
 import { FC, memo, useEffect, useState } from 'react';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { Link } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
 type Props ={
-  duringSpot: AddressAndDateSpotJoinData
+  duringSpot: DateSpotData
 };
 
 const Image = tw.img`mobile(M):w-24 mobile(M):h-24 w-20 h-20 rounded-t-xl`;

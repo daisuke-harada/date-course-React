@@ -1,10 +1,10 @@
 import { CourseInfoData, ManagementCourseData } from 'types/managementCourses/management';
 import { FC, memo, useEffect, useState } from 'react';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { CourseDuringSpotCard } from 'components/organisms/card/managementCourses/CourseDuringSpotCard';
 import { CourseInfoSelect } from 'components/molecules/select/managementCourses/CourseInfoSelect';
+import { DateSpotData } from 'types/dateSpots/response';
 import { Directions } from 'components/molecules/maps/Directions';
 import { GoogleMap } from 'components/molecules/maps/GoogleMap';
 import { Link } from 'react-router-dom';
@@ -29,7 +29,7 @@ export const CreateCourse: FC = memo(() => {
   const [legs, setLegs] = useState<{duration: string, distance: string}[]>([]);
 
   useEffect(() => {
-    const prefectureNames = managementCourse.dateSpots.map((dateSpot: AddressAndDateSpotJoinData) => (dateSpot.prefectureName));
+    const prefectureNames = managementCourse.dateSpots.map((dateSpot: DateSpotData) => (dateSpot.prefectureName));
     setNoDuplicatePrefectureNames(Array.from(new Set(prefectureNames)));
   }, [managementCourse.dateSpots]);
 
@@ -87,7 +87,7 @@ export const CreateCourse: FC = memo(() => {
                 <div className='md:w-2/3 md:mt-0 md:mx-3 md:h-auto h-96 w-full mt-10 mx-0 rounded-xl'>
                   {
                     managementCourse.dateSpots.length === 1?
-                    <GoogleMap addressAndDateSpot={managementCourse.dateSpots[0]} />
+                    <GoogleMap dateSpot={managementCourse.dateSpots[0]} />
                     :
                     <Directions managementCourse={managementCourse} setLegs={setLegs} travelMode={courseInfo.travelMode} />
                   }

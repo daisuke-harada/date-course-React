@@ -1,14 +1,13 @@
-import { memo, FC } from 'react';
+import { FC, memo } from 'react';
+
+import { DateSpotData } from 'types/dateSpots/response';
 import tw from 'tailwind-styled-components';
-
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
-
 
 const Button = tw.button`btn bg-white text-black w-full border-2 border-gray-400 hover:border-gray-500 shadow-lg hover:shadow-none`;
 const Image = tw.img`sm:w-7 sm:h-7 w-4 h-4 inline mb-1`;
 
 type Props = {
-  dateSpots: AddressAndDateSpotJoinData[]
+  dateSpots: DateSpotData[]
 }
 
 export const MoveGoogleMapButton: FC<Props> = memo((props) => {

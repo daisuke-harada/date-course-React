@@ -1,7 +1,7 @@
 import { FC, memo, useEffect, useState } from 'react';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { ChangeSelect } from 'components/molecules/select/managementCourses/ChangeSelect';
+import { DateSpotData } from 'types/dateSpots/response';
 import { DeleteCourseButton } from 'components/atoms/button/courses/DeleteCourseButton';
 import { Link } from 'react-router-dom';
 import { ManagementCourseData } from 'types/managementCourses/management';
@@ -10,7 +10,7 @@ import { client } from 'lib/api/client';
 import tw from 'tailwind-styled-components';
 
 type Props = {
-  courseDuringSpot: AddressAndDateSpotJoinData,
+  courseDuringSpot: DateSpotData,
   managementCourse: ManagementCourseData,
   courseNumber: number,
   leg?: {
@@ -27,14 +27,14 @@ const RoadDiv = tw.div`xl:w-64 lg:w-60 md:w-44 md:h-32 m-auto flex justify-cente
 
 export const CourseDuringSpotCard: FC<Props> = memo((props) => {
   const { courseDuringSpot, managementCourse, courseNumber, leg} = props;
-  const [addressAndDateSpot, setAddressAndDateSpot] = useState<AddressAndDateSpotJoinData>();
+  const [dateSpot, setDateSpot] = useState<DateSpotData>();
   const noImageUrl = `${process.env.PUBLIC_URL}/no_image.jpg`;
   const [dateSpotImage, setDateSpotImage] = useState(noImageUrl);
 
   useEffect(() => {
     client.get(`date_spots/${courseDuringSpot.id}`).then(response => {
-      response.data.addressAndDateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.image.url);
-      setAddressAndDateSpot(response.data.addressAndDateSpot);
+      response.data.dateSpot.image.url !== null && setDateSpotImage(response.data.dateSpot.image.url);
+      setDateSpot(response.data.dateSpot);
     });
   }, [courseDuringSpot.id]);
 
@@ -42,33 +42,33 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
     <>
       <MainDl>
         <DD>
-          <Link to={`/dateSpots/${addressAndDateSpot?.id}`}>
+          <Link to={`/dateSpots/${dateSpot?.id}`}>
             <Image src={dateSpotImage} alt='DateSpotImage' />
           </Link>
         </DD>
         <Title>
-          <Link to={`/dateSpots/${addressAndDateSpot?.id}`}>{addressAndDateSpot?.name}</Link>
+          <Link to={`/dateSpots/${dateSpot?.id}`}>{dateSpot?.name}</Link>
         </Title>
         {
-          addressAndDateSpot &&
+          dateSpot &&
           <div className='flex justify-center'>
-            <StarRateText rate={addressAndDateSpot.averageRate} size={24} />
+            <StarRateText rate={dateSpot.averageRate} size={24} />
           </div>
         }
         <DD>
-          <Link to={`/dateSpots/${addressAndDateSpot?.id}`}>
-            レビュー{addressAndDateSpot?.reviewTotalNumber}件
+          <Link to={`/dateSpots/${dateSpot?.id}`}>
+            レビュー{dateSpot?.reviewTotalNumber}件
           </Link>
         </DD>
-        <DD>{addressAndDateSpot?.cityName}</DD>
-        <DD>{addressAndDateSpot?.genreName}</DD>
+        <DD>{dateSpot?.cityName}</DD>
+        <DD>{dateSpot?.genreName}</DD>
         <DD>
           {
             managementCourse.dateSpots.length > 1
-            && addressAndDateSpot
+            && dateSpot
             &&
             <ChangeSelect
-              currentDateSpotId={addressAndDateSpot.id}
+              currentDateSpotId={dateSpot.id}
               managementCourse={managementCourse}
             />
           }
@@ -77,7 +77,7 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
           {
             managementCourse
             &&
-            <DeleteCourseButton  addressAndDateSpot={courseDuringSpot} />
+            <DeleteCourseButton  dateSpot={courseDuringSpot} />
           }
         </DD>
       </MainDl>

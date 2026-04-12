@@ -1,6 +1,6 @@
 import { FC, memo, useEffect, useState } from 'react';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotCard } from 'components/organisms/card/dateSpots/DateSpotCard';
 import { businessTimeDatas } from 'datas/businessTimeDatas';
 import { genreDatas } from 'datas/genreDatas';
@@ -12,7 +12,7 @@ const Img = tw.img`w-20 h-20 m-auto bg-gray-100`;
 const NumberDiv = tw.div`w-20 h-20 pt-6 text-3xl text-center m-auto`;
 
 type Props = {
-  addressAndDateSpots: AddressAndDateSpotJoinData[]
+  dateSpots: DateSpotData[]
   prefectureId?: string,
   genreId?: string,
   comeTime?: string,
@@ -20,8 +20,8 @@ type Props = {
 }
 
 export const DateSpotRanking: FC<Props> = memo((props) => {
-  const { addressAndDateSpots, prefectureId, genreId, comeTime, dateSpotSearchName } = props;
-  const top5 = addressAndDateSpots.sort((a, b) => (a.averageRate > b.averageRate ? -1 : 1)).slice(0, 5);
+  const { dateSpots, prefectureId, genreId, comeTime, dateSpotSearchName } = props;
+  const top5 = dateSpots.sort((a, b) => (a.averageRate > b.averageRate ? -1 : 1)).slice(0, 5);
   const [array, setArray] = useState<(string | undefined)[]>([]);
 
   useEffect(() => {
@@ -56,8 +56,8 @@ export const DateSpotRanking: FC<Props> = memo((props) => {
         }
       <div className='m-auto flex overflow-x-scroll border rounded-md whitespace-nowrap'>
         {
-          top5.map((addressAndDateSpot: AddressAndDateSpotJoinData, index) => (
-            <div key={addressAndDateSpot.id} className='flex flex-col'>
+          top5.map((dateSpot: DateSpotData, index) => (
+            <div key={dateSpot.id} className='flex flex-col'>
               <span className='text-xl text-center'>
                 {
                   index + 1 === 1 || index + 1 === 2 || index + 1 === 3 ?
@@ -68,7 +68,7 @@ export const DateSpotRanking: FC<Props> = memo((props) => {
                   </NumberDiv>
                 }
               </span>
-              <DateSpotCard key={addressAndDateSpot.id} addressAndDateSpot={addressAndDateSpot} />
+              <DateSpotCard key={dateSpot.id} dateSpot={dateSpot} />
             </div>
           ))
         }

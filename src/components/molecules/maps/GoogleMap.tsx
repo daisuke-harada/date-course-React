@@ -1,9 +1,9 @@
 import { memo, useState, FC } from 'react';
 import { AdvancedMarker, Pin, Map, InfoWindow, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 
 type Props = {
-  addressAndDateSpot: AddressAndDateSpotJoinData
+  dateSpot: DateSpotData
 };
 
 type Center = {
@@ -12,18 +12,18 @@ type Center = {
 }
 
 export const GoogleMap: FC<Props> = memo((props) => {
-  const { addressAndDateSpot } = props;
+  const { dateSpot } = props;
   const [infowindowOpen, setInfowindowOpen] = useState(true);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   const center: Center = {
-    lat: addressAndDateSpot.latitude,
-    lng: addressAndDateSpot.longitude,
+    lat: dateSpot.latitude,
+    lng: dateSpot.longitude,
   };
 
   return (
     <Map
-      mapId={String(addressAndDateSpot.id)}
+      mapId={String(dateSpot.id)}
       defaultZoom={20}
       defaultCenter={center}
       gestureHandling={'greedy'}
@@ -48,7 +48,7 @@ export const GoogleMap: FC<Props> = memo((props) => {
           maxWidth={300}
           onCloseClick={() => setInfowindowOpen(false)}
         >
-          {addressAndDateSpot.cityName}
+          {dateSpot.cityName}
         </InfoWindow>
       )}
     </Map>

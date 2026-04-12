@@ -1,4 +1,4 @@
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { UserResponseData } from 'types/users/response';
 
 export type CourseResponseData = {
@@ -6,6 +6,6 @@ export type CourseResponseData = {
   user: UserResponseData,
   travelMode: string,
   authority: string,
-  dateSpots: AddressAndDateSpotJoinData[],
+  dateSpots: DateSpotData[],
   noDuplicatePrefectureNames: string[]
 };

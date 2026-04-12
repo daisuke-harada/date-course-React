@@ -1,10 +1,10 @@
+import { DateSpotData } from 'types/dateSpots/response';
 import { UserResponseData } from 'types/users/response';
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 
 export type ManagementCourseData = {
   userId: number,
   user?: UserResponseData,
-  dateSpots: AddressAndDateSpotJoinData[]
+  dateSpots: DateSpotData[]
 };
 
 export type CourseInfoData = {

@@ -1,4 +1,4 @@
-import { AddressAndDateSpotJoinData, AddressResponseData, DateSpotResponseData } from "types/dateSpots/response";
+import { DateSpotData, DateSpotResponseData } from "types/dateSpots/response";
 
 export const initialDateSpot: DateSpotResponseData = {
   id: 0,
@@ -13,18 +13,7 @@ export const initialDateSpot: DateSpotResponseData = {
   updatedAt: new Date(),
 };
 
-export const initialAddress: AddressResponseData = {
-  id: 0,
-  cityName: '',
-  prefectureId: 0,
-  dateSpotId: 0,
-  latitude: 0,
-  longitude: 0,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-export const initialAddressAndDateSpotJoin: AddressAndDateSpotJoinData = {
+export const initialDateSpotData: DateSpotData = {
   id: 0,
   name: '',
   genreId: 0,

@@ -1,11 +1,12 @@
-import { ManagementCourseData, CourseInfoData, CurrentDateCourseState} from "types/managementCourses/management";
+import { CourseInfoData, CurrentDateCourseState, ManagementCourseData } from "types/managementCourses/management";
+
+import { initialDateSpotData } from "defaults/dateSpotDefaults";
 import { initialUser } from "defaults/userDefaults";
-import { initialAddressAndDateSpotJoin } from "defaults/dateSpotDefaults";
 
 export const initialManagementCourse: ManagementCourseData = {
   userId: 0,
   user: initialUser,
-  dateSpots: [initialAddressAndDateSpotJoin],
+  dateSpots: [initialDateSpotData],
 };
 
 export const initialCourseInfo: CourseInfoData = {

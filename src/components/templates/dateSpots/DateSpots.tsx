@@ -1,9 +1,9 @@
-import { memo, FC } from 'react';
+import { FC, memo } from 'react';
 
+import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { DateSpotCard } from 'components/organisms/card/dateSpots/DateSpotCard';
 import { DateSpotRanking } from 'components/organisms/rankings/DateSpotRanking';
 import { Loading } from 'components/pages/Loading';
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 
 type Props = {
   addressAndDateSpots: AddressAndDateSpotJoinData[],
@@ -30,7 +30,7 @@ export const DateSpots: FC<Props> = memo((props) => {
               dateSpotSearchName={dateSpotSearchName}
             />
             <div className='sm:justify-start justify-center flex flex-wrap'>
-              {addressAndDateSpots.map((addressAndDateSpot: AddressAndDateSpotJoinData) => (<DateSpotCard key={addressAndDateSpot.dateSpot.id} addressAndDateSpot={addressAndDateSpot} />))}
+              {addressAndDateSpots.map((addressAndDateSpot: AddressAndDateSpotJoinData) => (<DateSpotCard key={addressAndDateSpot.id} addressAndDateSpot={addressAndDateSpot} />))}
             </div>
           </>
         )

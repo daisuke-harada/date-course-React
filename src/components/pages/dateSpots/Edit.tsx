@@ -1,8 +1,8 @@
-import { memo, FC } from 'react';
-import { useLocation } from 'react-router-dom';
+import { FC, memo } from 'react';
 
 import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { DateSpotForm } from 'components/templates/dateSpots/DateSpotForm';
+import { useLocation } from 'react-router-dom';
 
 export const Edit: FC = memo(() => {
   const location = useLocation();
@@ -13,21 +13,21 @@ export const Edit: FC = memo(() => {
     <DateSpotForm
       dateSpotFormTitle='デートスポット情報の編集'
       formButtonName='更新'
-      nameDefaultValue={addressAndDateSpot.dateSpot.name}
+      nameDefaultValue={addressAndDateSpot.name}
       prefectureDefaultValue={addressAndDateSpot.prefectureName}
       cityNameDefaultValue={addressAndDateSpot.cityName}
-      genreDefaultValue={addressAndDateSpot.dateSpot.genreId.toString()}
+      genreDefaultValue={addressAndDateSpot.genreId.toString()}
       openingTimeDefaultValue={
-        (addressAndDateSpot.dateSpot.openingTime
-        && addressAndDateSpot.dateSpot.openingTime.toString())
+        (addressAndDateSpot.openingTime
+        && addressAndDateSpot.openingTime.toString())
         || ''
       }
       closingTimeDefaultValue={
-        (addressAndDateSpot.dateSpot.closingTime
-        && addressAndDateSpot.dateSpot.closingTime.toString())
+        (addressAndDateSpot.closingTime
+        && addressAndDateSpot.closingTime.toString())
         || ''
       }
-      dateSpotId={addressAndDateSpot.dateSpot.id}
+      dateSpotId={addressAndDateSpot.id}
    />
   );
 });

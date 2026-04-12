@@ -1,22 +1,21 @@
-import { memo, useEffect, useState, FC } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
+
+import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton';
+import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { BaseButton } from 'components/atoms/button/BaseButton'
+import { BusinessHour } from 'components/atoms/text/dateSpots/BusinessHour';
+import { DateSpotReviewArea } from 'components/organisms/area/dateSpotReviews/DateSpotReviewArea';
+import { GoogleMap } from 'components/molecules/maps/GoogleMap';
+import { Link } from 'react-router-dom';
+import { Loading } from '../Loading';
+import { RootState } from 'reducers';
+import { StarRateText } from 'components/atoms/text/StarRateText';
+import { User } from 'types/users/session';
+import { client } from 'lib/api/client';
+import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
+import tw from 'tailwind-styled-components';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import tw from 'tailwind-styled-components';
-
-import { client } from 'lib/api/client';
-import { BusinessHour } from 'components/atoms/text/dateSpots/BusinessHour';
-import { BaseButton } from 'components/atoms/button/BaseButton'
-import { Link } from 'react-router-dom';
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
-import { GoogleMap } from 'components/molecules/maps/GoogleMap';
-import { DateSpotReviewArea } from 'components/organisms/area/dateSpotReviews/DateSpotReviewArea';
-import { StarRateText } from 'components/atoms/text/StarRateText';
-import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
-import { Loading } from '../Loading';
-import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton';
-import { RootState } from 'reducers';
-import { User } from 'types/users/session';
-
 
 const MainDiv = tw.div`border shadow-xl bg-white mt-10 p-3 rounded-2xl m-2`;
 const DateSpotNameTitle = tw.h1`w-full my-5 text-sm font-bold md:text-3xl`;
@@ -39,7 +38,7 @@ export const Show: FC = memo(() => {
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {
       setAddressAndDateSpot(response.data.addressAndDateSpot);
-      response.data.addressAndDateSpot.dateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.dateSpot.image.url);
+      response.data.addressAndDateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.image.url);
       setDateSpotReviews(response.data.dateSpotReviews);
       setDateSpotAverageRate(response.data.reviewAverageRate);
     });
@@ -53,17 +52,17 @@ export const Show: FC = memo(() => {
             <ImageParentDiv>
               <Image src={dateSpotImage} alt='DateSpotProfileImage' />
             </ImageParentDiv>
-            <DateSpotNameTitle>{addressAndDateSpot?.dateSpot.name}</DateSpotNameTitle>
+            <DateSpotNameTitle>{addressAndDateSpot?.name}</DateSpotNameTitle>
             <div className='flex flex-col'>
               <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
               <StarRateText rate={dateSpotAverageRate} size={50} />
             </div>
-            <BusinessHour openingTime={addressAndDateSpot?.dateSpot.openingTime} closingTime={addressAndDateSpot?.dateSpot.closingTime} />
+            <BusinessHour openingTime={addressAndDateSpot?.openingTime} closingTime={addressAndDateSpot?.closingTime} />
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
               {addressAndDateSpot?.cityName}
             </div>
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
-              <Link to={`/genres/${addressAndDateSpot?.dateSpot.genreId}`}>
+              <Link to={`/genres/${addressAndDateSpot?.genreId}`}>
                 {addressAndDateSpot?.genreName}
               </Link>
             </div>
@@ -103,7 +102,7 @@ export const Show: FC = memo(() => {
           addressAndDateSpot
           &&
           <DateSpotReviewArea
-            dateSpotId={addressAndDateSpot.dateSpot.id}
+            dateSpotId={addressAndDateSpot.id}
             dateSpotReviews={dateSpotReviews}
             setDateSpotReviews={setDateSpotReviews}
             setDateSpotAverageRate={setDateSpotAverageRate}

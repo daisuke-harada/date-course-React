@@ -1,14 +1,14 @@
-import { memo, FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
+import { FC, memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { BaseButton } from '../BaseButton';
-import { useDispatch, useSelector } from 'react-redux';
+import { ManagementCourseData } from 'types/managementCourses/management';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
 import { setManagementCourse } from 'reducers/currentDateCourseSlice';
-import { ManagementCourseData } from 'types/managementCourses/management';
+import tw from 'tailwind-styled-components';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   addressAndDateSpot: AddressAndDateSpotJoinData
@@ -29,7 +29,7 @@ export const AddCourseButton: FC<Props> = memo((props) => {
     if(managementCourse.userId === 0){
       dispatch(setManagementCourse({userId: currentUser.id, dateSpots: [addressAndDateSpot]}))
       navigate('/managementCourse/createCourse');
-    } else if(managementCourse.dateSpots.some(spot => spot.dateSpot.id === addressAndDateSpot.dateSpot.id)){
+    } else if(managementCourse.dateSpots.some(spot => spot.id === addressAndDateSpot.id)){
       navigate('./', {state: {message: 'このスポットはすでに選択されています', type: 'error-message', condition: true}});
     } else {
       const dateCourseIdAndNames = managementCourse.dateSpots.slice();
@@ -47,7 +47,7 @@ export const AddCourseButton: FC<Props> = memo((props) => {
         &&
         (
         <ButtonParentDiv>
-          <BaseButton dataE2e={`courseAddButtonId-${addressAndDateSpot.dateSpot.id}`} onClickEvent={onClickAddCourseAction}>デートコースに追加</BaseButton>
+          <BaseButton dataE2e={`courseAddButtonId-${addressAndDateSpot.id}`} onClickEvent={onClickAddCourseAction}>デートコースに追加</BaseButton>
         </ButtonParentDiv>
         )
       }

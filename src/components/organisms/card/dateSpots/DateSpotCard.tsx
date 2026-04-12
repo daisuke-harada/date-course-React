@@ -1,12 +1,12 @@
-import { memo, useEffect, useState, FC } from 'react';
-import tw from 'tailwind-styled-components';
-import { Link } from 'react-router-dom';
+import { FC, memo, useEffect, useState } from 'react';
 
-import { StarRateText } from 'components/atoms/text/StarRateText';
 import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton';
+import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { Card } from 'components/atoms/card/Card';
-import { AddressAndDateSpotJoinData, DateSpotResponseData } from 'types/dateSpots/response';
+import { Link } from 'react-router-dom';
+import { StarRateText } from 'components/atoms/text/StarRateText';
 import { genreDatas } from 'datas/genreDatas';
+import tw from 'tailwind-styled-components';
 
 type Props = {
   addressAndDateSpot: AddressAndDateSpotJoinData
@@ -18,26 +18,25 @@ const Image = tw.img`w-52 h-52 m-auto rounded-xl border-4 border-pink-400 hover:
 
 export const DateSpotCard: FC<Props> = memo((props) => {
   const { addressAndDateSpot } = props;
-  const dateSpot: DateSpotResponseData = addressAndDateSpot.dateSpot;
   const noImageUrl = `${process.env.PUBLIC_URL}/no_image.jpg`;
   const [image, setImage] = useState(noImageUrl);
-  const genre = genreDatas.find(genreData => genreData.id === dateSpot.genreId);
+  const genre = genreDatas.find(genreData => genreData.id === addressAndDateSpot.genreId);
 
   useEffect(() => {
-    dateSpot.image && dateSpot.image.url && setImage(dateSpot.image.url);
-  }, [dateSpot]);
+    addressAndDateSpot.image && addressAndDateSpot.image.url && setImage(addressAndDateSpot.image.url);
+  }, [addressAndDateSpot]);
 
   return(
     <Card>
       <DD>
-        <Link to={`/dateSpots/${dateSpot.id}`}>
+        <Link to={`/dateSpots/${addressAndDateSpot.id}`}>
           <Image src={image} alt='DateSpotImage' />
         </Link>
       </DD>
       <Title>
-        <Link to={`/dateSpots/${dateSpot.id}`}>
+        <Link to={`/dateSpots/${addressAndDateSpot.id}`}>
           <div className='w-52 overflow-x-scroll whitespace-nowrap pb-2'>
-            {dateSpot.name}
+            {addressAndDateSpot.name}
           </div>
         </Link>
       </Title>
@@ -45,7 +44,7 @@ export const DateSpotCard: FC<Props> = memo((props) => {
         <StarRateText rate={addressAndDateSpot.averageRate} size={24} />
       </div>
       <DD>
-        <Link to={`/dateSpots/${dateSpot.id}`}>
+        <Link to={`/dateSpots/${addressAndDateSpot.id}`}>
           レビュー{addressAndDateSpot.reviewTotalNumber}件
         </Link>
       </DD>

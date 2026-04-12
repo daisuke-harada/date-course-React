@@ -1,13 +1,13 @@
-import { memo, useEffect, useState, FC } from 'react';
-import tw from 'tailwind-styled-components';
+import { FC, memo, useEffect, useState } from 'react';
 
 import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { ChangeSelect } from 'components/molecules/select/managementCourses/ChangeSelect';
+import { DeleteCourseButton } from 'components/atoms/button/courses/DeleteCourseButton';
 import { Link } from 'react-router-dom';
+import { ManagementCourseData } from 'types/managementCourses/management';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { client } from 'lib/api/client';
-import { ChangeSelect } from 'components/molecules/select/managementCourses/ChangeSelect';
-import { ManagementCourseData } from 'types/managementCourses/management';
-import { DeleteCourseButton } from 'components/atoms/button/courses/DeleteCourseButton';
+import tw from 'tailwind-styled-components';
 
 type Props = {
   courseDuringSpot: AddressAndDateSpotJoinData,
@@ -32,22 +32,22 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
   const [dateSpotImage, setDateSpotImage] = useState(noImageUrl);
 
   useEffect(() => {
-    client.get(`date_spots/${courseDuringSpot.dateSpot.id}`).then(response => {
-      response.data.addressAndDateSpot.dateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.dateSpot.image.url);
+    client.get(`date_spots/${courseDuringSpot.id}`).then(response => {
+      response.data.addressAndDateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.image.url);
       setAddressAndDateSpot(response.data.addressAndDateSpot);
     });
-  }, [courseDuringSpot.dateSpot.id]);
+  }, [courseDuringSpot.id]);
 
   return(
     <>
       <MainDl>
         <DD>
-          <Link to={`/dateSpots/${addressAndDateSpot?.dateSpot.id}`}>
+          <Link to={`/dateSpots/${addressAndDateSpot?.id}`}>
             <Image src={dateSpotImage} alt='DateSpotImage' />
           </Link>
         </DD>
         <Title>
-          <Link to={`/dateSpots/${addressAndDateSpot?.dateSpot.id}`}>{addressAndDateSpot?.dateSpot.name}</Link>
+          <Link to={`/dateSpots/${addressAndDateSpot?.id}`}>{addressAndDateSpot?.name}</Link>
         </Title>
         {
           addressAndDateSpot &&
@@ -56,7 +56,7 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
           </div>
         }
         <DD>
-          <Link to={`/dateSpots/${addressAndDateSpot?.dateSpot.id}`}>
+          <Link to={`/dateSpots/${addressAndDateSpot?.id}`}>
             レビュー{addressAndDateSpot?.reviewTotalNumber}件
           </Link>
         </DD>
@@ -68,7 +68,7 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
             && addressAndDateSpot
             &&
             <ChangeSelect
-              currentDateSpotId={addressAndDateSpot.dateSpot.id}
+              currentDateSpotId={addressAndDateSpot.id}
               managementCourse={managementCourse}
             />
           }

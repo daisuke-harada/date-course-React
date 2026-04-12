@@ -1,12 +1,12 @@
-import { memo, useCallback, FC } from 'react';
-import tw from 'tailwind-styled-components';
+import { FC, memo, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { DangerButton } from '../DangerButton';
-import { useDispatch, useSelector } from 'react-redux';
+import { ManagementCourseData } from 'types/managementCourses/management';
 import { RootState } from 'reducers';
 import { setManagementCourse } from 'reducers/currentDateCourseSlice';
-import { ManagementCourseData } from 'types/managementCourses/management';
+import tw from 'tailwind-styled-components';
 
 type Props = {
   addressAndDateSpot: AddressAndDateSpotJoinData
@@ -33,7 +33,7 @@ export const DeleteCourseButton: FC<Props> = memo((props) => {
 
   return(
     <ButtonParentDiv>
-       <DangerButton dataE2e={`courseDeleteButtonId-${addressAndDateSpot.dateSpot.id}`} onClickEvent={onClickDeleteCourseAction}>コースを削除</DangerButton>
+       <DangerButton dataE2e={`courseDeleteButtonId-${addressAndDateSpot.id}`} onClickEvent={onClickDeleteCourseAction}>コースを削除</DangerButton>
     </ButtonParentDiv>
   );
 });

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState, FC } from 'react';
 import tw from 'tailwind-styled-components';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { AreaData, GenreData, PrefectureData } from 'types/homes/data';
 import { Loading } from 'components/pages/Loading';
 import { Area } from 'components/organisms/card/homes/Area';
@@ -9,7 +9,7 @@ import { Genres } from 'components/organisms/card/homes/Genres';
 import { MainGenre } from 'components/organisms/card/homes/MainGenre';
 import { MainPrefecture } from 'components/organisms/card/homes/MainPrefecture';
 import { DateSpotRanking } from 'components/organisms/rankings/DateSpotRanking';
-import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
+import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { client } from 'lib/api/client';
 
 const ImageParentDiv = tw.div`relative h-96`;
@@ -21,7 +21,7 @@ export const Top: FC = memo(() => {
   const [ mainGenres, setMainGenres ] = useState<GenreData[]>([]);
   const [ genres, setGenres ] = useState<GenreData[]>([]);
   const [ mainPrefectures, setMainPrefectures ] = useState<PrefectureData[]>([]);
-  const [addressAndDateSpots, setAddressAndDateSpots] = useState<AddressAndDateSpotJoinData[]>([defaultAddressAndDateSpotJoinData]);
+  const [dateSpots, setDateSpots] = useState<DateSpotData[]>([defaultDateSpot]);
 
 
   useEffect(() => {
@@ -30,12 +30,12 @@ export const Top: FC = memo(() => {
       setGenres(response.data.genres);
       setMainGenres(response.data.mainGenres);
       setMainPrefectures(response.data.mainPrefectures);
-      setAddressAndDateSpots(response.data.addressAndDateSpots);
+      setDateSpots(response.data.dateSpots);
     });
   }, []);
 
   return(
-    <Loading loadingSwitch={addressAndDateSpots.length !== 0 && addressAndDateSpots[0].id === 0 && true}>
+    <Loading loadingSwitch={dateSpots.length !== 0 && dateSpots[0].id === 0 && true}>
       <ImageParentDiv>
         <Image src={`${process.env.PUBLIC_URL}/lp.jpg`} />
         {/* <h1 className='m-5 dtext-3xl font-bold z-10 bottom-0 absolute'>
@@ -72,7 +72,7 @@ export const Top: FC = memo(() => {
       </div>
 
       <div className='w-10/12 m-auto'>
-        <DateSpotRanking addressAndDateSpots={addressAndDateSpots} />
+        <DateSpotRanking dateSpots={dateSpots} />
       </div>
     </Loading>
   );

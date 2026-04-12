@@ -6,7 +6,7 @@ import { Courses } from 'components/templates/courses/Courses';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { MultiBar } from 'components/organisms/searchs/MultiBar';
 import { client } from 'lib/api/client';
-import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
+import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { defaultUserResponseData } from 'datas/defaultUserData';
 import { useSearchParams } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ export const Index: FC = memo(() => {
       user: defaultUserResponseData,
       travelMode: '',
       authority: '',
-      dateSpots: [defaultAddressAndDateSpotJoinData],
+      dateSpots: [defaultDateSpot],
       noDuplicatePrefectureNames: ['']
     }
   ]);

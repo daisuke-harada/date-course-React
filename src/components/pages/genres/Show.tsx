@@ -1,22 +1,22 @@
 import { memo, useEffect, useState, FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotNameSearchBar } from 'components/organisms/searchs/DateSpotNameSearchBar';
 import { DateSpotSortSearchBar } from 'components/organisms/searchs/DateSpotSortSearchBar';
 import { MultiBar } from 'components/organisms/searchs/MultiBar';
 import { DateSpots } from 'components/templates/dateSpots/DateSpots';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
-import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
+import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { client } from 'lib/api/client';
 
 export const Show: FC = memo(() => {
-  const [addressAndDateSpots, setAddressAndDateSpots] = useState<AddressAndDateSpotJoinData[]>([defaultAddressAndDateSpotJoinData]);
+  const [dateSpots, setDateSpots] = useState<DateSpotData[]>([defaultDateSpot]);
   const { id } = useParams();
 
   useEffect(() => {
     client.get(`genres/${id}`).then(response => {
-      setAddressAndDateSpots(response.data.addressAndDateSpots);
+      setDateSpots(response.data.dateSpots);
     })
   }, [id]);
 
@@ -45,7 +45,7 @@ export const Show: FC = memo(() => {
 
       mainArea={
         <DateSpots
-          addressAndDateSpots={addressAndDateSpots}
+          dateSpots={dateSpots}
           genreId={`${id}`}
         />
       }

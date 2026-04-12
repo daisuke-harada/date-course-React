@@ -1,8 +1,9 @@
+import { FC, memo, useState } from 'react';
+
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { client } from 'lib/api/client';
-import { memo, useState, FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Label = tw.label`font-bold mx-1 text-xs`;
 const Input = tw.input`mt-0.5`;
@@ -20,7 +21,7 @@ export const UserAndDateSpotSearchBar: FC = memo(() => {
   const onClickSearch: React.MouseEventHandler<HTMLButtonElement> = () => {
     client.post('name_search', { searchTarget, name }).then(response => {
       response.data.target === 'User' && navigate('/users/search', {state: {users: response.data.users}});
-      response.data.target === 'DateSpot' && navigate('/dateSpots/search', {state: {addressAndDateSpots: response.data.addressAndDateSpots}})
+      response.data.target === 'DateSpot' && navigate('/dateSpots/search', {state: {dateSpots: response.data.dateSpots}})
     });
   };
 

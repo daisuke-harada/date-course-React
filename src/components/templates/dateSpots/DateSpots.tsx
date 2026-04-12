@@ -1,12 +1,12 @@
 import { FC, memo } from 'react';
 
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
+import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotCard } from 'components/organisms/card/dateSpots/DateSpotCard';
 import { DateSpotRanking } from 'components/organisms/rankings/DateSpotRanking';
 import { Loading } from 'components/pages/Loading';
 
 type Props = {
-  addressAndDateSpots: AddressAndDateSpotJoinData[],
+  dateSpots: DateSpotData[],
   prefectureId?: string,
   genreId?: string,
   comeTime?: string,
@@ -14,23 +14,23 @@ type Props = {
 };
 
 export const DateSpots: FC<Props> = memo((props) => {
-  const { addressAndDateSpots, prefectureId, genreId, comeTime, dateSpotSearchName } = props;
+  const { dateSpots, prefectureId, genreId, comeTime, dateSpotSearchName } = props;
 
   return(
-    <Loading loadingSwitch={addressAndDateSpots.length !== 0 && addressAndDateSpots[0].id === 0 && true} >
+    <Loading loadingSwitch={dateSpots.length !== 0 && dateSpots[0].id === 0 && true} >
       {
-        addressAndDateSpots.length !== 0?
+        dateSpots.length !== 0?
         (
           <>
             <DateSpotRanking
-              addressAndDateSpots={addressAndDateSpots}
+              dateSpots={dateSpots}
               prefectureId={prefectureId}
               genreId={genreId}
               comeTime={comeTime}
               dateSpotSearchName={dateSpotSearchName}
             />
             <div className='sm:justify-start justify-center flex flex-wrap'>
-              {addressAndDateSpots.map((addressAndDateSpot: AddressAndDateSpotJoinData) => (<DateSpotCard key={addressAndDateSpot.id} addressAndDateSpot={addressAndDateSpot} />))}
+              {dateSpots.map((dateSpot: DateSpotData) => (<DateSpotCard key={dateSpot.id} dateSpot={dateSpot} />))}
             </div>
           </>
         )

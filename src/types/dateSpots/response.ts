@@ -11,7 +11,7 @@ export type DateSpotResponseData = {
   updatedAt: Date,
 };
 
-export type AddressResponseData = {
+export type AddressData = {
   id: number,
   cityName: string,
   prefectureId: number,
@@ -22,7 +22,7 @@ export type AddressResponseData = {
   updatedAt: Date,
 };
 
-export type AddressAndDateSpotJoinData = {
+export type DateSpotData = {
   id: number,
   name: string,
   genreId: number,

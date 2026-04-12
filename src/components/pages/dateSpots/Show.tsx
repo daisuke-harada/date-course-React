@@ -1,9 +1,9 @@
 import { FC, memo, useEffect, useState } from 'react';
 
 import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton';
-import { AddressAndDateSpotJoinData } from 'types/dateSpots/response';
 import { BaseButton } from 'components/atoms/button/BaseButton'
 import { BusinessHour } from 'components/atoms/text/dateSpots/BusinessHour';
+import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotReviewArea } from 'components/organisms/area/dateSpotReviews/DateSpotReviewArea';
 import { GoogleMap } from 'components/molecules/maps/GoogleMap';
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { RootState } from 'reducers';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
 import { client } from 'lib/api/client';
-import { defaultAddressAndDateSpotJoinData } from 'datas/defaultAddressAndDateSpotJoinData';
+import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import tw from 'tailwind-styled-components';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ const SubArea = tw.div`md:w-1/2 w-full`;
 
 export const Show: FC = memo(() => {
   const { id } = useParams();
-  const [addressAndDateSpot, setAddressAndDateSpot] = useState<AddressAndDateSpotJoinData>(defaultAddressAndDateSpotJoinData);
+  const [dateSpot, setDateSpot] = useState<DateSpotData>(defaultDateSpot);
   const [dateSpotReviews, setDateSpotReviews] = useState([]);
   const noImageUrl = `${process.env.PUBLIC_URL}/no_image.jpg`;
   const [dateSpotImage, setDateSpotImage] = useState(noImageUrl);
@@ -37,37 +37,37 @@ export const Show: FC = memo(() => {
 
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {
-      setAddressAndDateSpot(response.data.addressAndDateSpot);
-      response.data.addressAndDateSpot.image.url !== null && setDateSpotImage(response.data.addressAndDateSpot.image.url);
+      setDateSpot(response.data.dateSpot);
+      response.data.dateSpot.image.url !== null && setDateSpotImage(response.data.dateSpot.image.url);
       setDateSpotReviews(response.data.dateSpotReviews);
       setDateSpotAverageRate(response.data.reviewAverageRate);
     });
   }, [id]);
 
   return(
-    <Loading loadingSwitch={addressAndDateSpot.id === 0 && true}>
+    <Loading loadingSwitch={dateSpot.id === 0 && true}>
       <MainDiv>
         <SubDiv>
           <SubArea>
             <ImageParentDiv>
               <Image src={dateSpotImage} alt='DateSpotProfileImage' />
             </ImageParentDiv>
-            <DateSpotNameTitle>{addressAndDateSpot?.name}</DateSpotNameTitle>
+            <DateSpotNameTitle>{dateSpot?.name}</DateSpotNameTitle>
             <div className='flex flex-col'>
               <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
               <StarRateText rate={dateSpotAverageRate} size={50} />
             </div>
-            <BusinessHour openingTime={addressAndDateSpot?.openingTime} closingTime={addressAndDateSpot?.closingTime} />
+            <BusinessHour openingTime={dateSpot?.openingTime} closingTime={dateSpot?.closingTime} />
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
-              {addressAndDateSpot?.cityName}
+              {dateSpot?.cityName}
             </div>
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
-              <Link to={`/genres/${addressAndDateSpot?.genreId}`}>
-                {addressAndDateSpot?.genreName}
+              <Link to={`/genres/${dateSpot?.genreId}`}>
+                {dateSpot?.genreName}
               </Link>
             </div>
             <div className='lg:text-base md:mx-0 mobile(L):w-1/2 m-auto text-xs text-center mb-5'>
-              <AddCourseButton addressAndDateSpot={addressAndDateSpot}/>
+              <AddCourseButton dateSpot={dateSpot}/>
             </div>
             <div className='w-1/3 text-center mb-5'>
               {
@@ -77,7 +77,7 @@ export const Show: FC = memo(() => {
                   <Link
                       className='text-white'
                       to={`edit`}
-                      state={{addressAndDateSpot: addressAndDateSpot}}
+                      state={{dateSpot: dateSpot}}
                   >
                     <BaseButton dataE2e='dateSpot-edit-button'>
                         設定
@@ -89,9 +89,9 @@ export const Show: FC = memo(() => {
           </SubArea>
           <SubArea>
             {
-              addressAndDateSpot
+              dateSpot
               &&
-              <GoogleMap addressAndDateSpot={addressAndDateSpot} />
+              <GoogleMap dateSpot={dateSpot} />
             }
           </SubArea>
         </SubDiv>
@@ -99,10 +99,10 @@ export const Show: FC = memo(() => {
 
       <MainDiv>
         {
-          addressAndDateSpot
+          dateSpot
           &&
           <DateSpotReviewArea
-            dateSpotId={addressAndDateSpot.id}
+            dateSpotId={dateSpot.id}
             dateSpotReviews={dateSpotReviews}
             setDateSpotReviews={setDateSpotReviews}
             setDateSpotAverageRate={setDateSpotAverageRate}

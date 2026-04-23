@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setLoginStatus, setCurrentUser } from 'reducers/loginSlice';
+import { setCurrentUser, setToken } from 'reducers/loginSlice';
 import { SignInParams, User } from 'types/users/session';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -10,11 +10,11 @@ export const useLoginAuthAction = (signInParams: SignInParams) => {
   const navigate = useNavigate();
   const [errorMessages, setErrorMessages] = useState<String[]>([]);
 
-  const afterLoginSuccess = (data: User) => {
-    dispatch(setLoginStatus(true));
-    dispatch(setCurrentUser(data));
-    data.admin === false?
-    navigate(`/users/${data.id}`, {state: {message: 'ログインに成功しました', type: 'success-message', condition: true}})
+  const afterLoginSuccess = (user: User, token: string) => {
+    dispatch(setCurrentUser(user));
+    dispatch(setToken(token));
+    user.admin === false?
+    navigate(`/users/${user.id}`, {state: {message: 'ログインに成功しました', type: 'success-message', condition: true}})
     :
     navigate('/', {state: {message: 'ログインに成功しました', type: 'success-message', condition: true}});
   }
@@ -22,7 +22,7 @@ export const useLoginAuthAction = (signInParams: SignInParams) => {
   const loginAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     client.post('login', { signInParams })
       .then(response => {
-        afterLoginSuccess(response.data);
+        afterLoginSuccess(response.data.user, response.data.token);
       })
       .catch(error => {
         if (error.response && error.response.status === 401) {

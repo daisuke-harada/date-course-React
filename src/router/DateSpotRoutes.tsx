@@ -11,7 +11,7 @@ import { User } from 'types/users/session';
 
 export const DateSpotRoutes = () =>{
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus)
+  const token = useSelector<RootState, string>(state => state.session.token)
 
   return[
     {
@@ -20,7 +20,7 @@ export const DateSpotRoutes = () =>{
     },
     {
       path: ':id/edit',
-      element: loginStatus && currentUser.admin === true ?
+      element: token && currentUser.admin === true ?
       <Edit /> :
       <Navigate to='/' state={{message: '管理者しかアクセスできません', type: 'error-message', condition: true}} />
     },
@@ -30,7 +30,7 @@ export const DateSpotRoutes = () =>{
     },
     {
       path: 'new',
-      element: loginStatus && currentUser.admin === true ?
+      element: token && currentUser.admin === true ?
       <New /> :
       <Navigate to='/' state={{message: '管理者しかアクセスできません', type: 'error-message', condition: true}} />
     },

@@ -1,16 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { client } from 'lib/api/client';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginStatus, setCurrentUser } from 'reducers/loginSlice';
+import { clearAuth } from 'reducers/loginSlice';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
-import { initialUser } from 'defaults/userDefaults';
 
 export const useDeactivateAccountButtonAction = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser);
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus);
+  const token = useSelector<RootState, string>(state => state.session.token);
 
   const onCLickDeactivateAccountAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if( currentUser.id === 1 ){
@@ -18,8 +17,7 @@ export const useDeactivateAccountButtonAction = () => {
     }else {
       if(window.confirm('本当に退会しますか？')){
         client.delete(`users/${currentUser.id}`).then(response => {
-          dispatch(setLoginStatus(false))
-          dispatch(setCurrentUser(initialUser))
+          dispatch(clearAuth());
         }).then(() => {
           navigate('/', {state: {message: '退会しました', type: 'success-message', condition: true}});
         });
@@ -27,5 +25,5 @@ export const useDeactivateAccountButtonAction = () => {
     }
   };
 
-  return { onCLickDeactivateAccountAction, loginStatus };
+  return { onCLickDeactivateAccountAction, token };
 };

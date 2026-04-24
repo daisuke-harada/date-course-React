@@ -10,6 +10,6 @@ export const initialUser: User = {
 };
 
 export const initialLoginState: LoginState = {
-  loginStatus: false,
-  currentUser: initialUser
+  token: '',
+  currentUser: initialUser,
 };

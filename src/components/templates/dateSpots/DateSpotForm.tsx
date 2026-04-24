@@ -1,5 +1,5 @@
 import { FC, memo, useCallback, useState } from 'react';
-import { client, formDataClient } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { BusinessTimeSelectArea } from 'components/molecules/select/dateSpots/BusinessTimeSelectArea';
@@ -85,7 +85,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
   };
 
   const apiDateSpotCreateAccess = (dateSpot: FormData) => {
-    formDataClient.post('date_spots', dateSpot).then(response => {
+    axiosInstance.post('date_spots', dateSpot, { headers: { 'content-type': 'multipart/form-data' } }).then(response => {
       console.log(response.data)
       navigate(`/dateSpots/${response.data.dateSpotId}`,  {state: {message: '新規登録に成功しました', type: 'success-message', condition: true}});
     })
@@ -95,7 +95,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
   };
 
   const apiDateSpotUpdateAccess = (dateSpot: FormData, dateSpotId: number) => {
-    formDataClient.put(`date_spots/${dateSpotId}`, dateSpot).then(response => {
+    axiosInstance.put(`date_spots/${dateSpotId}`, dateSpot, { headers: { 'content-type': 'multipart/form-data' } }).then(response => {
       console.log(response)
       navigate(`/dateSpots/${response.data.dateSpotId}`,  {state: {message: '情報を更新しました', type: 'success-message', condition: true}});
     }).catch(error => {
@@ -120,7 +120,7 @@ export const DateSpotForm: FC<Props> = memo((props) => {
   // デートスポット削除用
   const onCLickDeleteDateSpotAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if(window.confirm('本当に削除しますか？')){
-      client.delete(`date_spots/${dateSpotId}`).then(response => {
+      axiosInstance.delete(`date_spots/${dateSpotId}`).then(response => {
         response.status === 204 && navigate('/', {state: {message: '削除しました', type: 'success-message', condition: true}} );
       });
     };

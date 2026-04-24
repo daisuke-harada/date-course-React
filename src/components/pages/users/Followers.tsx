@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 
 import { Users } from 'components/templates/users/Users';
 import { defaultUserResponseData } from 'datas/defaultUserData';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { UserResponseData } from 'types/users/response';
 
 export const Followers: FC = memo(() => {
@@ -12,7 +12,7 @@ export const Followers: FC = memo(() => {
   const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
-    client.get(`users/${id}/followers`).then(response => {
+    axiosInstance.get(`users/${id}/followers`).then(response => {
       setUsers(response.data.users);
       setUserName(response.data.userName);
     });

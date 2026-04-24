@@ -33,13 +33,14 @@ export const Show: FC = memo(() => {
   const [dateSpotImage, setDateSpotImage] = useState(noImageUrl);
   const [dateSpotAverageRate, setDateSpotAverageRate] = useState(0);
 
-  const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
+  const currentUser = useSelector<RootState, User | undefined>(state => state.session.currentUser)
   const loginStatus = useSelector(selectIsLoggedIn)
 
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {
-      setDateSpot(response.data.dateSpot);
-      response.data.dateSpot.image.url !== null && setDateSpotImage(response.data.dateSpot.image.url);
+      const spot = response.data.addressAndDateSpot;
+      setDateSpot(spot);
+      spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
       setDateSpotReviews(response.data.dateSpotReviews);
       setDateSpotAverageRate(response.data.reviewAverageRate);
     });
@@ -73,7 +74,7 @@ export const Show: FC = memo(() => {
             <div className='w-1/3 text-center mb-5'>
               {
                 loginStatus
-                && currentUser.admin === true
+                && currentUser?.admin === true
                 && (
                   <Link
                       className='text-white'

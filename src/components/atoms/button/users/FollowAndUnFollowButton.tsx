@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
 import { UserResponseData } from 'types/users/response';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import { setCurrentUser } from 'reducers/loginSlice';
 import tw from 'tailwind-styled-components';
@@ -32,7 +32,7 @@ export const FollowAndUnFollowButton: FC<Props> = memo((props) => {
   },[currentUser, userId]);
 
   const onClickFollowAction = () => {
-    client.post('relationships', {
+    axiosInstance.post('relationships', {
       currentUserId: currentUser.id,
       followedUserId: userId,
     }).then(response => {
@@ -43,7 +43,7 @@ export const FollowAndUnFollowButton: FC<Props> = memo((props) => {
   };
 
   const onClickUnfollowAction = () => {
-    client.delete(`relationships/${currentUserId}/${userId}`).then(response => {
+    axiosInstance.delete(`relationships/${currentUserId}/${userId}`).then(response => {
       setUsers && setUsers(response.data.users);
       dispatch(setCurrentUser(response.data.currentUser));
       setUser && setUser(response.data.unfollowedUser);

@@ -1,13 +1,14 @@
-import { memo, FC } from 'react';
-import { Link } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
+import { FC, memo } from 'react';
 
+import { GuestLoginButton } from 'components/atoms/button/users/GuestLoginButton';
 import { HeaderBottomRoutes } from 'router/HeaderBottomRoutes';
 import { HeaderTopLeftRoutes } from 'router/HeaderTopLeftRoutes';
-import { GuestLoginButton } from 'components/atoms/button/users/GuestLoginButton';
+import { Link } from 'react-router-dom';
 import { LogOutButton } from 'components/atoms/button/users/LogOutButton';
-import { useSelector } from 'react-redux';
 import { RootState } from 'reducers';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import tw from 'tailwind-styled-components';
+import { useSelector } from 'react-redux';
 
 type Props = {
   isOpen: boolean;
@@ -20,7 +21,7 @@ const ButtonList = tw.li`p-2 mt-3`;
 
 export const NavBar: FC<Props> = memo((props) => {
   const { isOpen, onClickNavBarSwitch } = props;
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus)
+  const loginStatus = useSelector(selectIsLoggedIn)
 
   return (
     <Ul className={`${isOpen ? `display` : `hidden`} `}>

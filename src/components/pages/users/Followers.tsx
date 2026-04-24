@@ -1,6 +1,7 @@
-import { memo, useEffect, useState, FC } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { FC, memo, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
+import { UserResponseData } from 'types/users/response';
 import { Users } from 'components/templates/users/Users';
 import { defaultUserResponseData } from 'datas/defaultUserData';
 import axiosInstance from 'lib/axiosInstance';

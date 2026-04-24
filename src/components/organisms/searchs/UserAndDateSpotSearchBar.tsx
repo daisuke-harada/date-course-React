@@ -19,10 +19,13 @@ export const UserAndDateSpotSearchBar: FC = memo(() => {
   const navigate = useNavigate();
 
   const onClickSearch: React.MouseEventHandler<HTMLButtonElement> = () => {
-    client.post('name_search', { searchTarget, name }).then(response => {
-      response.data.target === 'User' && navigate('/users/search', {state: {users: response.data.users}});
-      response.data.target === 'DateSpot' && navigate('/dateSpots/search', {state: {dateSpots: response.data.dateSpots}})
-    });
+    if (searchTarget === 'User') {
+      navigate(`/users/index?name=${encodeURIComponent(name)}`);
+    } else {
+      client.get('date_spots', { params: { name } }).then(response => {
+        navigate('/dateSpots/search', { state: { dateSpots: response.data } });
+      });
+    }
   };
 
 

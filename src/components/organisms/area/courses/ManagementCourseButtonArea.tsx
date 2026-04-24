@@ -3,7 +3,7 @@ import { FC, memo, useCallback } from 'react';
 
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { DangerButton } from 'components/atoms/button/DangerButton';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import tw from 'tailwind-styled-components';
 import { useCourseReset } from 'hooks/managementCourses/useCourseReset';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
       authority: getCourseInfo.authority
     }
 
-    client.post('courses', {course}).then(response => {
+    axiosInstance.post('courses', {course}).then(response => {
       response.status === 201 && navigate(`/courses/${response.data.courseId}`);
       response.status === 201 && resetmanagementCourse();
       response.status === 201 && resetCourseInfo();
@@ -46,22 +46,25 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
     });
   }, [ managementCourse, getCourseInfo, resetCourseInfo, resetmanagementCourse, navigate ]);
 
-  return(
-    <>
-      {
-        managementCourse.dateSpots && managementCourse.dateSpots.length > 1
-        &&
-        (
-          <ButtonArea>
-            <ButtonParentDiv>
-              <BaseButton onClickEvent={onClickCreateCourse}>登録</BaseButton>
-            </ButtonParentDiv>
-            <ButtonParentDiv>
-              <DangerButton onClickEvent={onClickAllDelete}>全て削除</DangerButton>
-            </ButtonParentDiv>
-          </ButtonArea>
-        )
-      }
-    </>
+  const onClickSearchDateSpot = useCallback(() => {
+    navigate('/dateSpots/index');
+  }, [navigate]);
+
+  return (
+    <ButtonArea>
+      <ButtonParentDiv>
+        <BaseButton onClickEvent={onClickSearchDateSpot}>デートスポットを探す</BaseButton>
+      </ButtonParentDiv>
+      {managementCourse.dateSpots && managementCourse.dateSpots.length > 1 && (
+        <>
+          <ButtonParentDiv>
+            <BaseButton onClickEvent={onClickCreateCourse}>登録</BaseButton>
+          </ButtonParentDiv>
+          <ButtonParentDiv>
+            <DangerButton onClickEvent={onClickAllDelete}>全て削除</DangerButton>
+          </ButtonParentDiv>
+        </>
+      )}
+    </ButtonArea>
   );
 });

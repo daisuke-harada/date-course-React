@@ -1,18 +1,19 @@
-import { memo, useCallback, useEffect, useState, FC } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
-
 import { CourseInfoData, ManagementCourseData } from 'types/managementCourses/management';
-import { Loading } from 'components/pages/Loading';
-import { CopyCourseButton } from 'components/atoms/button/courses/CopyCourseButton';
-import { MoveGoogleMapButton } from 'components/atoms/button/courses/MoveGoogleMapButton';
+import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import { BaseButton } from 'components/atoms/button/BaseButton';
+import { CopyCourseButton } from 'components/atoms/button/courses/CopyCourseButton';
+import { CourseDuringSpotCard } from 'components/organisms/card/managementCourses/CourseDuringSpotCard';
 import { DangerButton } from 'components/atoms/button/DangerButton';
 import { Directions } from 'components/molecules/maps/Directions';
-import { CourseDuringSpotCard } from 'components/organisms/card/managementCourses/CourseDuringSpotCard';
-import { client } from 'lib/api/client';
+import { Loading } from 'components/pages/Loading';
+import { MoveGoogleMapButton } from 'components/atoms/button/courses/MoveGoogleMapButton';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import axiosInstance from 'lib/axiosInstance';
+import { client } from 'lib/api/client';
+import tw from 'tailwind-styled-components';
 import { useSelector } from 'react-redux';
 
 const MainDiv = tw.div`md:mx-20 mx-2 px-2 bg-white mt-10 py-5 shadow-xl rounded-2xl`;
@@ -41,7 +42,7 @@ export const Show: FC = memo(() => {
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
 
   const onClickDeleteCourse = useCallback(()=>{
-    client.delete(`courses/${id}`).then(response => {
+    axiosInstance.delete(`courses/${id}`).then(response => {
       response.status === 204 && navigate(`/users/${currentUser.id}`, {state: {message: 'デートコースを削除しました', type: 'success-message', condition: true}});
     });
   },[id, currentUser.id, navigate]);

@@ -1,9 +1,8 @@
-import { memo, useState, FC } from 'react';
-import tw from 'tailwind-styled-components';
-import { useNavigate } from 'react-router-dom';
+import { FC, memo, useState } from 'react';
 
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { client } from 'lib/api/client';
+import tw from 'tailwind-styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Input = tw.input`py-1 px-3 w-full border-2 border-red-100 rounded-xl`;
 const MainDiv = tw.div`m-auto mt-3 p-3 shadow-xl bg-white border-2 rounded-3xl border-gray-200 flex flex-col`;
@@ -15,9 +14,7 @@ export const UserNameSearchBar: FC = memo(() => {
   const onChangeSearchName: React.ChangeEventHandler<HTMLInputElement> = (e) => setUserName(e.target.value);
 
   const onClickSearch: React.MouseEventHandler<HTMLButtonElement> = () => {
-    client.post('user_name_search', { userName }).then(response => {
-      navigate('/users/search', {state: {users: response.data, userSearchName: userName}});
-    });
+    navigate(`/users/index?name=${encodeURIComponent(userName)}`);
   };
 
   return(

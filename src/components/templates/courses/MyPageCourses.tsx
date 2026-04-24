@@ -1,14 +1,15 @@
-import { memo, useEffect, useState, FC } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import tw from 'tailwind-styled-components';
+import { FC, memo, useEffect, useState } from 'react';
 
-import { CourseResponseData } from 'types/courses/response';
-import { MyPageCourseCard } from 'components/organisms/card/courses/MyPageCourseCard';
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { SecondaryButton } from 'components/atoms/button/SecondaryButton';
+import { CourseResponseData } from 'types/courses/response';
+import { Link } from 'react-router-dom';
+import { MyPageCourseCard } from 'components/organisms/card/courses/MyPageCourseCard';
 import { RootState } from 'reducers';
+import { SecondaryButton } from 'components/atoms/button/SecondaryButton';
 import { User } from 'types/users/session';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import tw from 'tailwind-styled-components';
+import { useSelector } from 'react-redux';
 
 type Props = {
   courses: CourseResponseData[],
@@ -22,7 +23,7 @@ export const MyPageCourses: FC<Props> = memo((props) => {
   const { courses, userId } = props;
   const [filterCourses, setFilterCourses] = useState<CourseResponseData[]>([]);
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector<RootState,boolean>(state => state.session.loginStatus)
+  const loginStatus = useSelector(selectIsLoggedIn)
 
   // 非公開ステータスのデートコースを他のユーザーに見れなくする
   useEffect(() => {

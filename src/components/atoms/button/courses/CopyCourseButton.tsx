@@ -1,12 +1,13 @@
-import { memo, FC } from "react";
-import { useNavigate } from "react-router-dom";
-
 import { CourseInfoData, ManagementCourseData } from "types/managementCourses/management";
-import { SecondaryButton } from "../SecondaryButton";
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'reducers';
-import { User } from 'types/users/session';
+import { FC, memo } from "react";
 import { setCourseInfo, setManagementCourse } from "reducers/currentDateCourseSlice";
+import { useDispatch, useSelector } from 'react-redux';
+
+import { RootState } from 'reducers';
+import { SecondaryButton } from "../SecondaryButton";
+import { User } from 'types/users/session';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   managementCourse: ManagementCourseData,
@@ -18,7 +19,7 @@ export const CopyCourseButton: FC<Props> = memo((props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus)
+  const loginStatus = useSelector(selectIsLoggedIn);
 
   const onClickAddCourseAction = () => {
       dispatch(setManagementCourse({userId: currentUser.id, dateSpots: managementCourse.dateSpots}))

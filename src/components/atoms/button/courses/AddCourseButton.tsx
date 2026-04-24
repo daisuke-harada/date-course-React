@@ -6,6 +6,7 @@ import { DateSpotData } from 'types/dateSpots/response';
 import { ManagementCourseData } from 'types/managementCourses/management';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import { setManagementCourse } from 'reducers/currentDateCourseSlice';
 import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +22,7 @@ export const AddCourseButton: FC<Props> = memo((props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser);
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus);
+  const loginStatus = useSelector(selectIsLoggedIn);
   const managementCourse = useSelector<RootState, ManagementCourseData>(state => state.currentDateCourse.managementCourse)
   const onClickAddCourseAction = () => {
     // 以下の2つの条件を満たしている場合のみデートコースにデートスポットを追加することができる

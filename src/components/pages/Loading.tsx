@@ -1,4 +1,5 @@
-import { memo, ReactNode, FC } from 'react';
+import { FC, ReactNode, memo } from 'react';
+
 import ReactLoading from 'react-loading';
 
 type Props ={

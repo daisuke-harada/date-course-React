@@ -8,6 +8,7 @@ import { ImageForm } from 'components/atoms/form/ImageForm';
 import { RadioArea } from 'components/organisms/area/RadioArea';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import axiosInstance from 'lib/axiosInstance';
 import { formDataClient } from 'lib/api/client';
 import { setCurrentUser } from 'reducers/loginSlice';
 import tw from 'tailwind-styled-components';
@@ -88,7 +89,7 @@ export const UserForm: FC<Props> = memo((props) => {
       if(currentUser.id === 1) {
         navigate(`./`, {state: {message: 'guestユーザーは情報を更新できません', type: 'error-message', condition: true}});
       }else{
-        formDataClient.put(`users/${currentUser.id}`, user).then(response => {
+        axiosInstance.put(`users/${currentUser.id}`, user, { headers: { 'content-type': 'multipart/form-data' } }).then(response => {
             // 編集に成功したのでログイン情報も一緒に更新する。
             dispatch(setCurrentUser(response.data))
             // 画面遷移

@@ -1,10 +1,10 @@
-import { memo, useCallback, FC } from 'react';
+import { FC, memo, useCallback } from 'react';
+import { setCurrentUser, setLoginStatus } from 'reducers/loginSlice';
 
-import { useNavigate } from 'react-router-dom';
+import { User } from 'types/users/session';
 import { UserForm } from 'components/templates/users/UserForm';
 import { useDispatch } from 'react-redux';
-import { setCurrentUser, setLoginStatus } from 'reducers/loginSlice';
-import { User } from 'types/users/session';
+import { useNavigate } from 'react-router-dom';
 
 export const New: FC = memo(() => {
   const dispatch = useDispatch();

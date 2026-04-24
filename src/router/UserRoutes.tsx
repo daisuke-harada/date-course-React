@@ -7,7 +7,6 @@ import { Index } from 'components/pages/users/Index';
 import { New } from 'components/pages/users/New';
 import { Page404 } from 'components/pages/Page404';
 import { RootState } from 'reducers';
-import { Search } from 'components/pages/users/Search';
 import { Show } from 'components/pages/users/Show';
 import { User } from 'types/users/session';
 import { useSelector } from 'react-redux';

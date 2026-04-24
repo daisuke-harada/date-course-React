@@ -232,3 +232,26 @@ yarn test    # テスト実行（craco test）
 ## Docker
 
 `compose.yml` / `Dockerfile.develop` で開発環境をコンテナ化。`docker-entrypoint.sh` でコンテナ起動時の処理を定義。
+
+## 開発ワークフロー
+
+| 作業の種類 | 作成するもの |
+|----------|------------|
+| 実装・修正が完了したとき | **PR を作成する** |
+| 設計・調査・計画のとき | **Issue を作成する** |
+
+- 作業が終わったら必ず PR または Issue を作成して作業を記録する。
+- ブランチ命名規則: `fix/<内容>` / `feature/<内容>` / `docs/<内容>` / `refactor/<内容>`
+- PR は `main` ブランチへのマージを基本とする。
+
+## API 通信ルール
+
+認証が必要なエンドポイントには必ず `axiosInstance`（`src/lib/axiosInstance.ts`）を使用する。
+`client` / `formDataClient`（`src/lib/api/client.ts`）は認証ヘッダーを付与しないため、
+`authenticate_user!` が設定されている Rails エンドポイントへの呼び出しには使用しない。
+
+| クライアント | 用途 |
+|-----------|------|
+| `axiosInstance` | 認証が必要なエンドポイント（Bearer トークン自動付与） |
+| `client` | 認証不要なエンドポイント（GET /top, GET /date_spots など） |
+| `formDataClient` | 使用しない（axiosInstance に `content-type: multipart/form-data` ヘッダーを渡す） |

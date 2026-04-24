@@ -12,4 +12,5 @@ export const initialUser: User = {
 export const initialLoginState: LoginState = {
   token: '',
   currentUser: initialUser,
+  loginStatus: false,
 };

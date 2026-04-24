@@ -1,13 +1,14 @@
-import { memo, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, memo } from 'react';
 
 import { DateSpotReviewAndUserResponseData } from 'types/dateSpotReviews/response';
 import { DateSpotReviewForm } from 'components/molecules/form/dateSpotReview/DateSpotReviewForm';
-import { ReviewCard } from 'components/organisms/card/reviews/ReviewCard';
-import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
 import { Link } from 'react-router-dom';
+import { ReviewCard } from 'components/organisms/card/reviews/ReviewCard';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import { useSelector } from 'react-redux';
 
 type Props = {
   dateSpotId: number,
@@ -19,7 +20,7 @@ type Props = {
 export const DateSpotReviewArea: FC<Props> = memo((props) => {
   const { dateSpotId, dateSpotReviews, setDateSpotReviews, setDateSpotAverageRate } = props;
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser);
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus);
+  const loginStatus = useSelector(selectIsLoggedIn);
 
   return(
     <>

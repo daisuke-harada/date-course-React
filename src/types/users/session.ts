@@ -7,6 +7,7 @@ export type SignInParams = {
 export type LoginState = {
   currentUser: User;
   token: string;
+  loginStatus: boolean;
 }
 // ユーザー
 export type User = {

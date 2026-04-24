@@ -1,12 +1,13 @@
-import { memo, useEffect, useState, FC } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import tw from 'tailwind-styled-components';
 
-import { setCurrentUser } from 'reducers/loginSlice';
-import { UserResponseData } from 'types/users/response';
-import { client } from 'lib/api/client';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { UserResponseData } from 'types/users/response';
+import { client } from 'lib/api/client';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import { setCurrentUser } from 'reducers/loginSlice';
+import tw from 'tailwind-styled-components';
 
 type Props = {
   userId: number,
@@ -24,7 +25,7 @@ export const FollowAndUnFollowButton: FC<Props> = memo((props) => {
   const dispatch = useDispatch();
   const [currentUserId, setCurrentUserId] = useState<number>(0);
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser);
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus);
+  const loginStatus = useSelector(selectIsLoggedIn);
 
   useEffect(() => {
     currentUser && setCurrentUserId(currentUser.id);

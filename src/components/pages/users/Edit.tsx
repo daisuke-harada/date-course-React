@@ -1,10 +1,9 @@
-import { memo, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { FC, memo } from 'react';
 
-import { UserForm } from 'components/templates/users/UserForm';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
-
+import { UserForm } from 'components/templates/users/UserForm';
+import { useSelector } from 'react-redux';
 
 export const Edit: FC = memo(() => {
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)

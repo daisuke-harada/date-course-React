@@ -13,6 +13,7 @@ import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
 import { client } from 'lib/api/client';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -33,7 +34,7 @@ export const Show: FC = memo(() => {
   const [dateSpotAverageRate, setDateSpotAverageRate] = useState(0);
 
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus)
+  const loginStatus = useSelector(selectIsLoggedIn)
 
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {

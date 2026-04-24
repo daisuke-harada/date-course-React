@@ -1,27 +1,28 @@
-import { memo, useEffect, useState, FC } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import tw from 'tailwind-styled-components';
 
-import { client } from 'lib/api/client';
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
-import { FollowAndUnFollowButton } from 'components/atoms/button/users/FollowAndUnFollowButton';
-import { UserResponseData } from 'types/users/response';
-import { FollowingsAndFollowersLinkArea } from 'components/organisms/area/users/FollowingsAndFollowersLinkArea';
-import { UserShowPageMenu } from 'components/organisms/menu/users/UserShowPageMenu';
 import { CourseResponseData } from 'types/courses/response';
 import { DateSpotReviewAndDateSpotResponseData } from 'types/dateSpotReviews/response';
+import { FollowAndUnFollowButton } from 'components/atoms/button/users/FollowAndUnFollowButton';
+import { FollowingsAndFollowersLinkArea } from 'components/organisms/area/users/FollowingsAndFollowersLinkArea';
 import { Loading } from '../Loading';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
+import { UserResponseData } from 'types/users/response';
+import { UserShowPageMenu } from 'components/organisms/menu/users/UserShowPageMenu';
+import { client } from 'lib/api/client';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import tw from 'tailwind-styled-components';
+import { useSelector } from 'react-redux';
 
 const Span = tw.span`my-1 font-bold`;
 const ProfileDiv = tw.div`sm:my-8 my-4 mx-2 flex w-full`;
 
 export const Show: FC = memo(() => {
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus)
+  const loginStatus = useSelector(selectIsLoggedIn)
   const { id } = useParams();
   const [user, setUser] = useState<UserResponseData>(
     {

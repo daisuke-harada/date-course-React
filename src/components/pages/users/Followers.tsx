@@ -1,10 +1,10 @@
-import { memo, useEffect, useState, FC } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { FC, memo, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-import { Users } from 'components/templates/users/Users';
-import { defaultUserResponseData } from 'datas/defaultUserData';
-import { client } from 'lib/api/client';
 import { UserResponseData } from 'types/users/response';
+import { Users } from 'components/templates/users/Users';
+import { client } from 'lib/api/client';
+import { defaultUserResponseData } from 'datas/defaultUserData';
 
 export const Followers: FC = memo(() => {
   const { id } = useParams();

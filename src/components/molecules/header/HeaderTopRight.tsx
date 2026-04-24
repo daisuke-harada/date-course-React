@@ -1,11 +1,12 @@
-import { memo, FC } from 'react';
+import { FC, memo } from 'react';
 
 import { GuestLoginButton } from 'components/atoms/button/users/GuestLoginButton';
-import { MenuIconButton } from 'components/atoms/button/MenuIconButton';
-import tw from 'tailwind-styled-components';
 import { LogOutButton } from 'components/atoms/button/users/LogOutButton';
-import { useSelector } from 'react-redux';
+import { MenuIconButton } from 'components/atoms/button/MenuIconButton';
 import { RootState } from 'reducers';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import tw from 'tailwind-styled-components';
+import { useSelector } from 'react-redux';
 
 type Props = {
   isOpen: boolean,
@@ -18,7 +19,7 @@ const ButtonParentDiv = tw.div`lg:block hidden mt-5`;
 
 export const HeaderTopRight: FC<Props> = memo((props) => {
   const {onClickNavBarSwitch, isOpen} = props;
-  const loginStatus = useSelector<RootState, boolean>(state => state.session.loginStatus)
+  const loginStatus = useSelector(selectIsLoggedIn)
 
   return(
     <>

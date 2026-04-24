@@ -1,15 +1,18 @@
-import { useNavigate } from 'react-router-dom';
-import { client } from 'lib/api/client';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearAuth } from 'reducers/loginSlice';
+
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
+import { clearAuth } from 'reducers/loginSlice';
+import { client } from 'lib/api/client';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
+import { useNavigate } from 'react-router-dom';
 
 export const useDeactivateAccountButtonAction = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser);
   const token = useSelector<RootState, string>(state => state.session.token);
+  const loginStatus = useSelector(selectIsLoggedIn);
 
   const onCLickDeactivateAccountAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if( currentUser.id === 1 ){
@@ -25,5 +28,5 @@ export const useDeactivateAccountButtonAction = () => {
     }
   };
 
-  return { onCLickDeactivateAccountAction, token };
+  return { onCLickDeactivateAccountAction, token, loginStatus };
 };

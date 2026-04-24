@@ -9,7 +9,7 @@ import { StarRateForm } from 'components/atoms/form/StarRateForm';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
 import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -54,7 +54,7 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
   const navigate = useNavigate();
 
   const onClickDateSpotReviewCreateAction: React.MouseEventHandler<HTMLButtonElement>  = () => {
-    client.post('date_spot_reviews', { dateSpotReview: dateSpotReview }).then(response => {
+    axiosInstance.post('date_spot_reviews', { dateSpotReview: dateSpotReview }).then(response => {
       setDateSpotReviews(response.data.dateSpotReviews);
       setContent('');
       setRate(0);
@@ -70,7 +70,7 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
   const onClickDateSpotReviewUpdateAction: React.MouseEventHandler<HTMLButtonElement>  = () => {
     currentDateSpotReview
     &&
-    client.put(`date_spot_reviews/${currentDateSpotReview.id}`, dateSpotReview).then(response => {
+    axiosInstance.put(`date_spot_reviews/${currentDateSpotReview.id}`, dateSpotReview).then(response => {
       setDateSpotReviews(response.data.dateSpotReviews);
       setContent('');
       setRate(0);
@@ -88,7 +88,7 @@ export const DateSpotReviewForm: FC<Props> = memo((props) => {
   const onClickDateSpotReviewDeleteAction: React.MouseEventHandler<HTMLButtonElement> = () => {
     currentDateSpotReview
     &&
-    client.delete(`date_spot_reviews/${currentDateSpotReview.id}`).then(response => {
+    axiosInstance.delete(`date_spot_reviews/${currentDateSpotReview.id}`).then(response => {
       response.status === 200 && setDateSpotReviews(response.data.dateSpotReviews);
       response.status === 200 && navigate(`./`, {state: {message: 'コメントを削除しました', type: 'success-message', condition: true}});
       response.status === 200 && setContent('');

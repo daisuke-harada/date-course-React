@@ -1,8 +1,8 @@
-import { memo, FC } from 'react';
-import { Link } from 'react-router-dom';
-import tw from 'tailwind-styled-components';
+import { FC, memo } from 'react';
 
 import { GenreData } from 'types/homes/data';
+import { Link } from 'react-router-dom';
+import tw from 'tailwind-styled-components';
 
 const MainDiv = tw.div`m-4 p-4 w-9/12 flex flex-wrap lg:justify-start justify-center`;
 
@@ -18,9 +18,9 @@ export const Genres: FC<Props> = memo((props) => {
     <MainDiv>
       {
         genres.map((genre) => (
-          <div key={genre.attributes.id} className='font-bold w-36 m-2'>
-            <Link to={`/genres/${genre.attributes.id}`}>
-              {genre.attributes.name}
+          <div key={genre.id} className='font-bold w-36 m-2'>
+            <Link to={`/genres/${genre.id}`}>
+              {genre.name}
             </Link>
           </div>
         ))

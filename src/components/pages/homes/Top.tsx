@@ -1,16 +1,16 @@
-import { memo, useEffect, useState, FC } from 'react';
-import tw from 'tailwind-styled-components';
-
-import { DateSpotData } from 'types/dateSpots/response';
 import { AreaData, GenreData, PrefectureData } from 'types/homes/data';
-import { Loading } from 'components/pages/Loading';
+import { FC, memo, useEffect, useState } from 'react';
+
 import { Area } from 'components/organisms/card/homes/Area';
+import { DateSpotData } from 'types/dateSpots/response';
+import { DateSpotRanking } from 'components/organisms/rankings/DateSpotRanking';
 import { Genres } from 'components/organisms/card/homes/Genres';
+import { Loading } from 'components/pages/Loading';
 import { MainGenre } from 'components/organisms/card/homes/MainGenre';
 import { MainPrefecture } from 'components/organisms/card/homes/MainPrefecture';
-import { DateSpotRanking } from 'components/organisms/rankings/DateSpotRanking';
-import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { client } from 'lib/api/client';
+import { defaultDateSpot } from 'datas/defaultDateSpotData';
+import tw from 'tailwind-styled-components';
 
 const ImageParentDiv = tw.div`relative h-96`;
 const Image = tw.img`object-cover object-top absolute w-full h-full`;
@@ -30,7 +30,8 @@ export const Top: FC = memo(() => {
       setGenres(response.data.genres);
       setMainGenres(response.data.mainGenres);
       setMainPrefectures(response.data.mainPrefectures);
-      setDateSpots(response.data.dateSpots);
+      console.log(response.data.mainPrefectures);
+      setDateSpots(response.data.addressAndDateSpots);
     });
   }, []);
 
@@ -47,12 +48,12 @@ export const Top: FC = memo(() => {
         <SubAreaDiv>
           {
             mainPrefectures.map((mainPrefecture) => (
-              <MainPrefecture key={mainPrefecture.attributes.id} prefecture={mainPrefecture} />
+              <MainPrefecture key={mainPrefecture.id} prefecture={mainPrefecture} />
             ))
           }
           {
             areas.map((area) => (
-              <Area key={area.attributes.id} area={area} />
+              <Area key={area.id} area={area} />
             ))
           }
         </SubAreaDiv>
@@ -63,7 +64,7 @@ export const Top: FC = memo(() => {
           <SubAreaDiv>
             {
               mainGenres.map((genre) => (
-                <MainGenre key={genre.attributes.id} genre={genre} />
+                <MainGenre key={genre.id} genre={genre} />
               ))
             }
             <Genres genres={genres} />

@@ -5,7 +5,6 @@ import { UserResponseData } from 'types/users/response';
 import { Users } from 'components/templates/users/Users';
 import { defaultUserResponseData } from 'datas/defaultUserData';
 import axiosInstance from 'lib/axiosInstance';
-import { UserResponseData } from 'types/users/response';
 
 export const Followers: FC = memo(() => {
   const { id } = useParams();

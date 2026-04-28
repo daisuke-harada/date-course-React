@@ -31,7 +31,7 @@ export const Top: FC = memo(() => {
       setMainGenres(response.data.mainGenres);
       setMainPrefectures(response.data.mainPrefectures);
       console.log(response.data.mainPrefectures);
-      setDateSpots(response.data.addressAndDateSpots);
+      setDateSpots(response.data.dateSpots);
     });
   }, []);
 

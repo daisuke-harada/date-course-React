@@ -33,7 +33,7 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
 
   useEffect(() => {
     client.get(`date_spots/${courseDuringSpot.id}`).then(response => {
-      const spot = response.data.addressAndDateSpot;
+      const spot = response.data.dateSpot;
       spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
       setDateSpot(spot);
     });

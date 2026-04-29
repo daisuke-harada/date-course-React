@@ -38,7 +38,7 @@ export const Show: FC = memo(() => {
 
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {
-      const spot = response.data.addressAndDateSpot;
+      const spot = response.data.dateSpot;
       setDateSpot(spot);
       spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
       setDateSpotReviews(response.data.dateSpotReviews);

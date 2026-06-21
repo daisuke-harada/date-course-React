@@ -7,8 +7,6 @@ export const initialDateSpot: DateSpotResponseData = {
   image: {
     url: null
   },
-  openingTime: new Date(),
-  closingTime: new Date(),
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -18,8 +16,6 @@ export const initialDateSpotData: DateSpotData = {
   name: '',
   genreId: 0,
   image: { url: null },
-  openingTime: undefined,
-  closingTime: undefined,
   createdAt: new Date(),
   updatedAt: new Date(),
   cityName: '',

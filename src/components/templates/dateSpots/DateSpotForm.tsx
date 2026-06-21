@@ -2,7 +2,6 @@ import { FC, memo, useCallback, useState } from 'react';
 import axiosInstance from 'lib/axiosInstance';
 
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { BusinessTimeSelectArea } from 'components/molecules/select/dateSpots/BusinessTimeSelectArea';
 import { DangerButton } from 'components/atoms/button/DangerButton';
 import { GenreSelect } from 'components/molecules/select/dateSpots/GenreSelect';
 import { ImageForm } from 'components/atoms/form/ImageForm';
@@ -24,8 +23,6 @@ type Props = {
   prefectureDefaultValue: string,
   cityNameDefaultValue: string,
   genreDefaultValue: string,
-  openingTimeDefaultValue: string,
-  closingTimeDefaultValue: string,
   imageDefaultValue?: File,
   dateSpotId?: number
 };
@@ -40,8 +37,6 @@ export const DateSpotForm: FC<Props> = memo((props) => {
     prefectureDefaultValue,
     cityNameDefaultValue,
     genreDefaultValue,
-    openingTimeDefaultValue,
-    closingTimeDefaultValue,
     imageDefaultValue,
   } = props;
 
@@ -53,16 +48,12 @@ export const DateSpotForm: FC<Props> = memo((props) => {
   const [prefectureValue, setPrefectureValue] = useState<string >(prefectureDatas.find((data) => (data.name === prefectureDefaultValue))?.id.toString() || '');
   const [cityName, setCityName] = useState<string>(cityNameDefaultValue);
   const [genreValue, setGenreValue] = useState<string>(genreDefaultValue);
-  const [openingTime, setOpeningTime] = useState<string>(openingTimeDefaultValue);
-  const [closingTime, setClosingTime] = useState<string>(closingTimeDefaultValue);
   const [image, setImage] = useState<File | undefined>(imageDefaultValue);
 
   const onChangeName: React.ChangeEventHandler<HTMLInputElement> = (e) => setName(e.target.value);
   const onChangePrefectureValue: React.ChangeEventHandler<HTMLSelectElement> = useCallback((e) => setPrefectureValue(e.target.value), []);
   const onChangeCityName: React.ChangeEventHandler<HTMLInputElement> = (e) => setCityName(e.target.value);
   const onChangeGenreValue: React.ChangeEventHandler<HTMLSelectElement> = useCallback((e) => setGenreValue(e.target.value), []);
-  const onChangeOpeningTime: React.ChangeEventHandler<HTMLSelectElement> = useCallback((e) => setOpeningTime(e.target.value), []);
-  const onChangeClosingTime: React.ChangeEventHandler<HTMLSelectElement> = useCallback((e) => setClosingTime(e.target.value), []);
 
   const selectImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.currentTarget.files !== null){
@@ -76,8 +67,6 @@ export const DateSpotForm: FC<Props> = memo((props) => {
     const formData = new FormData();
     formData.append('date_spot[name]', name);
     formData.append('date_spot[genreId]', genreValue);
-    formData.append('date_spot[openingTime]', openingTime);
-    formData.append('date_spot[closingTime]', closingTime);
     image && formData.append('date_spot[image]', image);
     formData.append('date_spot[prefectureId]', prefectureValue);
     formData.append('date_spot[cityName]', cityName);
@@ -139,14 +128,6 @@ export const DateSpotForm: FC<Props> = memo((props) => {
         <PrefectureSelect dataE2e='dateSpot-prefecture-select' value={prefectureValue} onChangeValue={onChangePrefectureValue} />
         <Input data-e2e='dateSpot-form-cityName-input' placeholder='市町村名、番地' value={cityName} onChange={onChangeCityName} />
         <GenreSelect dataE2e='dateSpot-genre-select' value={genreValue} onChangeValue={onChangeGenreValue} />
-        <BusinessTimeSelectArea
-          defaultOpeningTimeValue={openingTime}
-          defaultClosingTimeValue={closingTime}
-          onChangeOpeningTimeValue={onChangeOpeningTime}
-          onChangeClosingTimeValue={onChangeClosingTime}
-          openingDataE2e='dateSpot-opningTime-select'
-          closingDataE2e='dateSpot-closingTime-select'
-        />
         <ImageForm selectImage={selectImage} />
         <ButtonParentDiv>
           <BaseButton dataE2e='dateSpot-form-button' onClickEvent={DateSpotRegistAndUpdateAction}>{formButtonName}</BaseButton>

@@ -2,7 +2,6 @@ import { FC, memo, useEffect, useState } from 'react';
 
 import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton';
 import { BaseButton } from 'components/atoms/button/BaseButton'
-import { BusinessHour } from 'components/atoms/text/dateSpots/BusinessHour';
 import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotReviewArea } from 'components/organisms/area/dateSpotReviews/DateSpotReviewArea';
 import { GoogleMap } from 'components/molecules/maps/GoogleMap';
@@ -59,7 +58,6 @@ export const Show: FC = memo(() => {
               <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
               <StarRateText rate={dateSpotAverageRate} size={50} />
             </div>
-            <BusinessHour openingTime={dateSpot?.openingTime} closingTime={dateSpot?.closingTime} />
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
               {dateSpot?.cityName}
             </div>

@@ -5,8 +5,6 @@ export type DateSpotResponseData = {
   image?: {
     url: string | null
   },
-  openingTime?: Date,
-  closingTime?: Date,
   createdAt: Date,
   updatedAt: Date,
 };
@@ -29,8 +27,6 @@ export type DateSpotData = {
   image?: {
     url: string | null
   },
-  openingTime?: Date,
-  closingTime?: Date,
   createdAt: Date,
   updatedAt: Date,
   cityName: string,

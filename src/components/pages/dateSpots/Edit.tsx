@@ -17,16 +17,6 @@ export const Edit: FC = memo(() => {
       prefectureDefaultValue={dateSpot.prefectureName}
       cityNameDefaultValue={dateSpot.cityName}
       genreDefaultValue={dateSpot.genreId.toString()}
-      openingTimeDefaultValue={
-        (dateSpot.openingTime
-        && dateSpot.openingTime.toString())
-        || ''
-      }
-      closingTimeDefaultValue={
-        (dateSpot.closingTime
-        && dateSpot.closingTime.toString())
-        || ''
-      }
       dateSpotId={dateSpot.id}
    />
   );

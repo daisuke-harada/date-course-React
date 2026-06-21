@@ -29,7 +29,7 @@ const store = configureStore({
     serializableCheck: {
       // persist/PERSIST と persist/REHYDRATE はredux-persistが使用するため除外
       ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-      // DateSpotData の createdAt / updatedAt / openingTime / closingTime は Date オブジェクトのため除外
+      // DateSpotData の createdAt / updatedAt は Date オブジェクトのため除外
       ignoredPaths: [
         'currentDateCourse.managementCourse.dateSpots',
         'session.currentUser',

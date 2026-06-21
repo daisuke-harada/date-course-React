@@ -31,8 +31,6 @@ export const ChangeSelect: FC<Props> = memo((props) => {
       image: {
         url: null
       },
-      openingTime: new Date('2022/11/02'),
-      closingTime: new Date('2022/11/02'),
       createdAt: new Date('2022/11/02'),
       updatedAt: new Date('2022/11/02'),
       cityName: '',

@@ -11,8 +11,6 @@ export const New: FC = memo(() => {
      prefectureDefaultValue=''
      cityNameDefaultValue=''
      genreDefaultValue=''
-     openingTimeDefaultValue=''
-     closingTimeDefaultValue=''
     />
   );
 });

@@ -11,6 +11,7 @@ import { RootState } from 'reducers';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
 import { client } from 'lib/api/client';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
@@ -37,7 +38,7 @@ export const Show: FC = memo(() => {
 
   useEffect(() => {
     client.get(`date_spots/${id}`).then(response => {
-      const spot = response.data.dateSpot;
+      const spot = toFlatDateSpot(response.data.dateSpot);
       setDateSpot(spot);
       spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
       setDateSpotReviews(response.data.dateSpotReviews);

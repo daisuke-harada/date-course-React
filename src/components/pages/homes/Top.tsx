@@ -9,6 +9,7 @@ import { Loading } from 'components/pages/Loading';
 import { MainGenre } from 'components/organisms/card/homes/MainGenre';
 import { MainPrefecture } from 'components/organisms/card/homes/MainPrefecture';
 import { client } from 'lib/api/client';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import tw from 'tailwind-styled-components';
 
@@ -31,7 +32,7 @@ export const Top: FC = memo(() => {
       setMainGenres(response.data.mainGenres);
       setMainPrefectures(response.data.mainPrefectures);
       console.log(response.data.mainPrefectures);
-      setDateSpots(response.data.dateSpots);
+      setDateSpots(response.data.dateSpots.map(toFlatDateSpot));
     });
   }, []);
 

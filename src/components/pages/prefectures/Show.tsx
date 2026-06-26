@@ -9,6 +9,7 @@ import { DateSpots } from 'components/templates/dateSpots/DateSpots';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { client } from 'lib/api/client';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 
 export const Show: FC = memo(() => {
   const [dateSpots, setDateSpots] = useState<DateSpotData[]>([defaultDateSpot]);
@@ -16,9 +17,7 @@ export const Show: FC = memo(() => {
 
   useEffect(() => {
     client.get(`prefectures/${id}`).then(response => {
-      console.log(response)
-      console.log(response.data)
-      setDateSpots(response.data);
+      setDateSpots(response.data.map(toFlatDateSpot));
     })
   }, [id]);
 

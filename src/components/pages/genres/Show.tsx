@@ -9,6 +9,7 @@ import { DateSpots } from 'components/templates/dateSpots/DateSpots';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { client } from 'lib/api/client';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 
 export const Show: FC = memo(() => {
   const [dateSpots, setDateSpots] = useState<DateSpotData[]>([defaultDateSpot]);
@@ -16,7 +17,7 @@ export const Show: FC = memo(() => {
 
   useEffect(() => {
     client.get(`genres/${id}`).then(response => {
-      setDateSpots(response.data.dateSpots);
+      setDateSpots(response.data.dateSpots.map(toFlatDateSpot));
     })
   }, [id]);
 

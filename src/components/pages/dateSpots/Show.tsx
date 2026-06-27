@@ -12,6 +12,7 @@ import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
 import { client } from 'lib/api/client';
 import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
+import { REVIEWS_ENABLED } from 'config/features';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
@@ -55,10 +56,12 @@ export const Show: FC = memo(() => {
               <Image src={dateSpotImage} alt='DateSpotProfileImage' />
             </ImageParentDiv>
             <DateSpotNameTitle>{dateSpot?.name}</DateSpotNameTitle>
-            <div className='flex flex-col'>
-              <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
-              <StarRateText rate={dateSpotAverageRate} size={50} />
-            </div>
+            {REVIEWS_ENABLED && (
+              <div className='flex flex-col'>
+                <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
+                <StarRateText rate={dateSpotAverageRate} size={50} />
+              </div>
+            )}
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
               {dateSpot?.cityName}
             </div>
@@ -98,18 +101,20 @@ export const Show: FC = memo(() => {
         </SubDiv>
       </MainDiv>
 
-      <MainDiv>
-        {
-          dateSpot
-          &&
-          <DateSpotReviewArea
-            dateSpotId={dateSpot.id}
-            dateSpotReviews={dateSpotReviews}
-            setDateSpotReviews={setDateSpotReviews}
-            setDateSpotAverageRate={setDateSpotAverageRate}
-          />
-        }
-      </MainDiv>
+      {REVIEWS_ENABLED && (
+        <MainDiv>
+          {
+            dateSpot
+            &&
+            <DateSpotReviewArea
+              dateSpotId={dateSpot.id}
+              dateSpotReviews={dateSpotReviews}
+              setDateSpotReviews={setDateSpotReviews}
+              setDateSpotAverageRate={setDateSpotAverageRate}
+            />
+          }
+        </MainDiv>
+      )}
     </Loading>
   );
 });

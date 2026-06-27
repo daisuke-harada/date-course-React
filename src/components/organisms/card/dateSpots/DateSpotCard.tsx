@@ -5,6 +5,7 @@ import { DateSpotData } from 'types/dateSpots/response';
 import { Card } from 'components/atoms/card/Card';
 import { Link } from 'react-router-dom';
 import { StarRateText } from 'components/atoms/text/StarRateText';
+import { REVIEWS_ENABLED } from 'config/features';
 import { genreDatas } from 'datas/genreDatas';
 import tw from 'tailwind-styled-components';
 
@@ -40,14 +41,18 @@ export const DateSpotCard: FC<Props> = memo((props) => {
           </div>
         </Link>
       </Title>
-      <div className='flex justify-center'>
-        <StarRateText rate={dateSpot.averageRate} size={24} />
-      </div>
-      <DD>
-        <Link to={`/dateSpots/${dateSpot.id}`}>
-          レビュー{dateSpot.reviewTotalNumber}件
-        </Link>
-      </DD>
+      {REVIEWS_ENABLED && (
+        <>
+          <div className='flex justify-center'>
+            <StarRateText rate={dateSpot.averageRate} size={24} />
+          </div>
+          <DD>
+            <Link to={`/dateSpots/${dateSpot.id}`}>
+              レビュー{dateSpot.reviewTotalNumber}件
+            </Link>
+          </DD>
+        </>
+      )}
       <DD>
         <div className='pb-2 overflow-x-scroll whitespace-nowrap'>
           {dateSpot.cityName}

@@ -2,6 +2,7 @@ import { FC, memo, useEffect, useState } from 'react';
 
 import { DateSpotData } from 'types/dateSpots/response';
 import { DateSpotCard } from 'components/organisms/card/dateSpots/DateSpotCard';
+import { REVIEWS_ENABLED } from 'config/features';
 import { businessTimeDatas } from 'datas/businessTimeDatas';
 import { genreDatas } from 'datas/genreDatas';
 import { prefectureDatas } from 'datas/prefectureDatas';
@@ -31,6 +32,9 @@ export const DateSpotRanking: FC<Props> = memo((props) => {
     comeTime && readyArray.push(`来店希望時間 ${businessTimeDatas.find((data) => (data.value_time === comeTime))?.time}`);
     setArray(readyArray);
   }, [prefectureId, genreId, comeTime]);
+
+  // 人気ランキングは評価（レビュー）に基づくため、レビュー非表示時はランキングごと出さない
+  if (!REVIEWS_ENABLED) return null;
 
   return(
     <MaindDiv>

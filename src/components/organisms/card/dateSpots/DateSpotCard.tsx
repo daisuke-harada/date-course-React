@@ -4,6 +4,7 @@ import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton
 import { DateSpotData } from 'types/dateSpots/response';
 import { Card } from 'components/atoms/card/Card';
 import { Link } from 'react-router-dom';
+import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { REVIEWS_ENABLED } from 'config/features';
 import { genreDatas } from 'datas/genreDatas';
@@ -63,6 +64,7 @@ export const DateSpotCard: FC<Props> = memo((props) => {
           {genre?.name}
         </Link>
       </DD>
+      <DD><SpotExternalLink dateSpot={dateSpot} /></DD>
       <DD><AddCourseButton dateSpot={dateSpot} /></DD>
     </Card>
   );

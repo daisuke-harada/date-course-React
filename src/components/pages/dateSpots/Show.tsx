@@ -12,6 +12,7 @@ import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
 import { client } from 'lib/api/client';
 import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
+import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
 import { REVIEWS_ENABLED } from 'config/features';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
@@ -69,6 +70,9 @@ export const Show: FC = memo(() => {
               <Link to={`/genres/${dateSpot?.genreId}`}>
                 {dateSpot?.genreName}
               </Link>
+            </div>
+            <div className='mx-2 my-5 text-center'>
+              <SpotExternalLink dateSpot={dateSpot} />
             </div>
             <div className='lg:text-base md:mx-0 mobile(L):w-1/2 m-auto text-xs text-center mb-5'>
               <AddCourseButton dateSpot={dateSpot}/>

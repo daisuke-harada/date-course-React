@@ -36,4 +36,6 @@ export type DateSpotData = {
   genreName: string,
   reviewTotalNumber: number,
   averageRate: number,
+  mapsUrl?: string | null,
+  source?: string,
 };

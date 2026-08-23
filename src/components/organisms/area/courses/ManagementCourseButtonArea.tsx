@@ -33,14 +33,17 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
 
   const onClickCreateCourse = useCallback(() => {
     const courseDateSpotIds = managementCourse.dateSpots.map((dateSpot) => dateSpot.id);
-    // 作成者はサーバー側がトークンから決めるため userId は送らない
-    const course = {
-      dateSpots: courseDateSpotIds,
-      travelMode: getCourseInfo.travelMode,
-      authority: getCourseInfo.authority
-    }
+    // 作成者はサーバー側がトークンから決めるため userId は送らない。
+    //
+    // Go バックエンドは application/x-www-form-urlencoded で受け取り、
+    // スポットは `date_spots[]` の繰り返しで読む（Rails の course ネストは廃止）。
+    // JSON で送ると値が読まれず 422 になるため URLSearchParams で組み立てる。
+    const course = new URLSearchParams();
+    courseDateSpotIds.forEach((id) => course.append('date_spots[]', String(id)));
+    course.append('travel_mode', getCourseInfo.travelMode);
+    course.append('authority', getCourseInfo.authority);
 
-    axiosInstance.post('courses', {course}).then(response => {
+    axiosInstance.post('courses', course).then(response => {
       response.status === 201 && navigate(`/courses/${response.data.courseId}`);
       response.status === 201 && resetmanagementCourse();
       response.status === 201 && resetCourseInfo();

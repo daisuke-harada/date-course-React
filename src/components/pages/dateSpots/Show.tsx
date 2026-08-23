@@ -14,6 +14,7 @@ import axiosInstance from 'lib/axiosInstance';
 import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
 import { REVIEWS_ENABLED } from 'config/features';
+import { displayableImageUrl } from 'lib/imageUrl';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
@@ -42,7 +43,8 @@ export const Show: FC = memo(() => {
     axiosInstance.get(`date_spots/${id}`).then(response => {
       const spot = toFlatDateSpot(response.data.dateSpot);
       setDateSpot(spot);
-      spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
+      const imageUrl = displayableImageUrl(spot?.image?.url);
+      imageUrl && setDateSpotImage(imageUrl);
       setDateSpotReviews(response.data.dateSpotReviews);
       setDateSpotAverageRate(response.data.reviewAverageRate);
     });

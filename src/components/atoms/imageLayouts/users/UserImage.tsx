@@ -1,5 +1,6 @@
 import { memo, useEffect, useState, FC } from 'react';
 import { Link } from 'react-router-dom';
+import { displayableImageUrl } from 'lib/imageUrl';
 import tw from 'tailwind-styled-components';
 
 type Props = {
@@ -22,7 +23,8 @@ export const UserImage: FC<Props> = memo((props) => {
 
   // 性別が女性の場合と男性の場合で写真の枠の色を変更する。
   useEffect(() => {
-    image && image.url !== null && setUserImage(image.url);
+    const imageUrl = displayableImageUrl(image?.url);
+    imageUrl && setUserImage(imageUrl);
     if(gender === '女性'){
       setGenderBorderColor('border-red-400 hover:border-red-500');
     }else if(gender === '男性'){

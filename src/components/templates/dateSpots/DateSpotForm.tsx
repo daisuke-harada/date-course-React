@@ -63,13 +63,19 @@ export const DateSpotForm: FC<Props> = memo((props) => {
     };
   }, []);
 
+  // Go バックエンドは date_spot ネストを持たず、各値をトップレベルのスネークケースで読む
+  // （POST は ctx.FormValue、PUT は form タグへの Bind）。
+  // FormData は axios-case-converter の変換対象外なので、サーバーが読むキー名で直接積む。
+  //
+  // なお image は Go 側が「文字列（URL）」として受け取る作りで、ファイルアップロードは
+  // 未実装のため、ファイルを積んでもサーバー側では空として扱われる。
   const createFormData = (): FormData => {
     const formData = new FormData();
-    formData.append('date_spot[name]', name);
-    formData.append('date_spot[genreId]', genreValue);
-    image && formData.append('date_spot[image]', image);
-    formData.append('date_spot[prefectureId]', prefectureValue);
-    formData.append('date_spot[cityName]', cityName);
+    formData.append('name', name);
+    formData.append('genre_id', genreValue);
+    image && formData.append('image', image);
+    formData.append('prefecture_id', prefectureValue);
+    formData.append('city_name', cityName);
     return formData;
   };
 

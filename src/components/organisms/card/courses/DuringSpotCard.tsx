@@ -2,6 +2,7 @@ import { FC, memo, useEffect, useState } from 'react';
 
 import { DateSpotData } from 'types/dateSpots/response';
 import { Link } from 'react-router-dom';
+import { displayableImageUrl } from 'lib/imageUrl';
 import tw from 'tailwind-styled-components';
 
 type Props ={
@@ -16,7 +17,8 @@ export const DuringSpotCard: FC<Props> = memo((props) => {
   const [ duringSpotImage, setDuringSpotImage] = useState(noImage);
 
   useEffect(() => {
-    duringSpot.image && duringSpot.image.url && setDuringSpotImage(duringSpot.image.url);
+    const imageUrl = displayableImageUrl(duringSpot.image?.url);
+    imageUrl && setDuringSpotImage(imageUrl);
   }, [duringSpot]);
 
   return(

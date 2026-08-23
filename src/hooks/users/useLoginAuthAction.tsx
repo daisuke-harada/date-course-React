@@ -20,7 +20,9 @@ export const useLoginAuthAction = (signInParams: SignInParams) => {
   }
 
   const loginAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    axiosInstance.post('login', { signInParams })
+    // Go バックエンドは name / password をトップレベルで受け取る（Rails の
+    // sign_in_params ネストは廃止された）。ネストして送ると 422 でログインできない。
+    axiosInstance.post('login', signInParams)
       .then(response => {
         afterLoginSuccess(response.data.user, response.data.token);
       })

@@ -2,11 +2,15 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "reducers";
 import { User } from "types/users/session";
+import { selectIsLoggedIn } from "reducers/selectors/authSelectors";
 
 
 export const HeaderBottomRoutes =  () => {
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector<RootState, User>(state => state.session.currentUser)
+  // currentUser は未ログインでも初期値のオブジェクトが入っていて常に truthy なので、
+  // ログイン判定はトークンを見る selectIsLoggedIn を使う。
+  // ここを currentUser にしていたため、未ログインでもマイページが出ていた。
+  const loginStatus = useSelector(selectIsLoggedIn)
 
   const headers = [
     {

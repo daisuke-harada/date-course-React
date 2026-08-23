@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { REVIEWS_ENABLED } from 'config/features';
+import { displayableImageUrl } from 'lib/imageUrl';
 import { genreDatas } from 'datas/genreDatas';
 import tw from 'tailwind-styled-components';
 
@@ -25,7 +26,8 @@ export const DateSpotCard: FC<Props> = memo((props) => {
   const genre = genreDatas.find(genreData => genreData.id === dateSpot.genreId);
 
   useEffect(() => {
-    dateSpot.image && dateSpot.image.url && setImage(dateSpot.image.url);
+    const imageUrl = displayableImageUrl(dateSpot.image?.url);
+    imageUrl && setImage(imageUrl);
   }, [dateSpot]);
 
   return(

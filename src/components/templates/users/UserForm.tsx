@@ -68,7 +68,10 @@ export const UserForm: FC<Props> = memo((props) => {
     formData.append('email', email);
     formData.append('gender', gender);
     formData.append('password', password);
-    formData.append('passwordConfirmation', passwordConfirmation);
+    // FormData は axios-case-converter のキャメル→スネーク変換の対象外なので、
+    // サーバーが読むキー名（password_confirmation）で直接積む。
+    // camelCase のまま送ると Go 側では空文字になり「パスワード（確認）が一致しません」になる。
+    formData.append('password_confirmation', passwordConfirmation);
     image && formData.append('image', image);
     return formData;
   };

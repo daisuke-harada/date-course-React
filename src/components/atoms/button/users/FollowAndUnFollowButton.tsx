@@ -32,10 +32,12 @@ export const FollowAndUnFollowButton: FC<Props> = memo((props) => {
   },[currentUser, userId]);
 
   const onClickFollowAction = () => {
-    axiosInstance.post('relationships', {
-      currentUserId: currentUser.id,
-      followedUserId: userId,
-    }).then(response => {
+    // Go バックエンドは application/x-www-form-urlencoded で followed_user_id を読む。
+    // フォローする側はトークンから決まるため currentUserId は送らない。
+    const params = new URLSearchParams();
+    params.append('followed_user_id', String(userId));
+
+    axiosInstance.post('relationships', params).then(response => {
       setUsers && setUsers(response.data.users);
       dispatch(setCurrentUser(response.data.currentUser));
       setUser && setUser(response.data.followedUser);

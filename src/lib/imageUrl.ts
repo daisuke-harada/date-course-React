@@ -3,20 +3,21 @@
 // Go バックエンドが返す image.url は 2 種類ある。
 //
 //   1. HotPepper 由来のスポット … `https://imgfp.hotp.jp/...` の絶対 URL
-//   2. seed 由来の手動データ    … `public/images/date_spot_images/カフェ.jpg` の相対パス
-//      （ユーザーのプロフィール画像も同じく `public/images/user_images/man1.jpg`）
+//   2. seed 由来のデータ        … `/images/user_images/man1.jpg` のような、
+//      このアプリの public/ に置いた静的ファイルを指すルート基準の絶対パス
 //
-// 2 は Rails 時代の名残で、当時は CarrierWave の asset_host が
-// `http://localhost:7777` を前置して絶対 URL にしていた。Go は静的配信を持たず
-// パスをそのまま返すため、<img> に渡すとフロント自身のオリジンを見に行って壊れる。
+// どちらもそのまま <img src> に渡せるため、ここでは «表示できない値» を弾くのが役割。
 //
-// そこで同名のファイルをフロントの public/images/ に置き、ここでパスを差し替える。
-// バックエンドが画像配信を持つようになったら、この分岐ごと不要になる。
+// なお 2 は以前 `public/images/...` という相対パスだった（Rails 時代の名残で、
+// 当時は CarrierWave の asset_host が絶対 URL を組み立てていた）。Go は画像を
+// 配信しないためこの形式では表示できず、seed 側をルート基準の絶対パスに直した。
+// DB を作り直していない環境では旧形式が残るので、後方互換として変換しておく。
 const LEGACY_PREFIX = 'public/images/';
 
 export const displayableImageUrl = (url?: string | null): string | null => {
   if (!url) return null;
   if (/^https?:\/\//.test(url)) return url;
+  if (url.startsWith('/')) return url;
   if (url.startsWith(LEGACY_PREFIX)) {
     return `${process.env.PUBLIC_URL}/images/${url.slice(LEGACY_PREFIX.length)}`;
   }

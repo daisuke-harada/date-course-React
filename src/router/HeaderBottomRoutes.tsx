@@ -31,7 +31,8 @@ export const HeaderBottomRoutes =  () => {
     },
   ];
 
-  loginStatus && currentUser.admin === false && headers.push({ text: 'マイページ', dataE2e: 'myPage-data', path: `users/${currentUser.id}` });
+  // 管理者もデートコースを持てるようになったため、マイページは全ログインユーザーに出す
+  loginStatus && headers.push({ text: 'マイページ', dataE2e: 'myPage-data', path: `users/${currentUser.id}` });
 
   return headers;
 }

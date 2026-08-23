@@ -12,7 +12,6 @@ import { MoveGoogleMapButton } from 'components/atoms/button/courses/MoveGoogleM
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
 import axiosInstance from 'lib/axiosInstance';
-import { client } from 'lib/api/client';
 import tw from 'tailwind-styled-components';
 import { useSelector } from 'react-redux';
 
@@ -48,7 +47,7 @@ export const Show: FC = memo(() => {
   },[id, currentUser.id, navigate]);
 
   useEffect(() => {
-    client.get(`courses/${id}`).then(response => {
+    axiosInstance.get(`courses/${id}`).then(response => {
       setmanagementCourse({userId: response.data.user.id, user: response.data.user, dateSpots: response.data.dateSpots});
       setCourseInfo({travelMode: response.data.travelMode, authority: response.data.authority, noDuplicatePrefectureNames: response.data.noDuplicatePrefectureNames});
       if(response.data.travelMode === 'DRIVING'){

@@ -12,7 +12,7 @@ import { User } from 'types/users/session';
 import { UserImage } from 'components/atoms/imageLayouts/users/UserImage';
 import { UserResponseData } from 'types/users/response';
 import { UserShowPageMenu } from 'components/organisms/menu/users/UserShowPageMenu';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
 import { useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ export const Show: FC = memo(() => {
   const [genderTextColor, setGenderTextColor] = useState('');
 
   useEffect(() => {
-    client.get(`users/${id}`).then(response => {
+    axiosInstance.get(`users/${id}`).then(response => {
       setUser(response.data);
       setCourses(response.data.courses);
       setDateSpotReviews(response.data.dateSpotReviews);

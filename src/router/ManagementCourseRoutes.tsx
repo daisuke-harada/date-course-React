@@ -1,12 +1,13 @@
 import { CreateCourse } from 'components/pages/managementCourses/CreateCourse';
 import { Page404 } from 'components/pages/Page404';
-import { PrivateRoute } from 'router/PrivateRoute';
 
 export const ManagementCourseRoutes = () => {
   return [
     {
+      // デートコースの組み立ては未ログインでもできる。
+      // 登録（API への POST）だけがログインを必要とする。
       path: 'createCourse',
-      element: <PrivateRoute element={<CreateCourse />} />,
+      element: <CreateCourse />,
     },
     {
       path: '*',

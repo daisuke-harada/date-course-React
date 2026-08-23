@@ -10,7 +10,7 @@ import { Loading } from '../Loading';
 import { RootState } from 'reducers';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
 import { REVIEWS_ENABLED } from 'config/features';
@@ -39,7 +39,7 @@ export const Show: FC = memo(() => {
   const loginStatus = useSelector(selectIsLoggedIn)
 
   useEffect(() => {
-    client.get(`date_spots/${id}`).then(response => {
+    axiosInstance.get(`date_spots/${id}`).then(response => {
       const spot = toFlatDateSpot(response.data.dateSpot);
       setDateSpot(spot);
       spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);

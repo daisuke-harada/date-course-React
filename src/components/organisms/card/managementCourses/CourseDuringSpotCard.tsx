@@ -6,7 +6,7 @@ import { DeleteCourseButton } from 'components/atoms/button/courses/DeleteCourse
 import { Link } from 'react-router-dom';
 import { ManagementCourseData } from 'types/managementCourses/management';
 import { StarRateText } from 'components/atoms/text/StarRateText';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import tw from 'tailwind-styled-components';
 
 type Props = {
@@ -32,7 +32,7 @@ export const CourseDuringSpotCard: FC<Props> = memo((props) => {
   const [dateSpotImage, setDateSpotImage] = useState(noImageUrl);
 
   useEffect(() => {
-    client.get(`date_spots/${courseDuringSpot.id}`).then(response => {
+    axiosInstance.get(`date_spots/${courseDuringSpot.id}`).then(response => {
       const spot = response.data.dateSpot;
       spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
       setDateSpot(spot);

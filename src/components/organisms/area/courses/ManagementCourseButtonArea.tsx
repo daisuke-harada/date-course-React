@@ -4,9 +4,11 @@ import { FC, memo, useCallback } from 'react';
 import { BaseButton } from 'components/atoms/button/BaseButton';
 import { DangerButton } from 'components/atoms/button/DangerButton';
 import axiosInstance from 'lib/axiosInstance';
+import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
 import { useCourseReset } from 'hooks/managementCourses/useCourseReset';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 type Props = {
   managementCourse: ManagementCourseData,
@@ -20,6 +22,7 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
   const { managementCourse, getCourseInfo } = props;
 
   const navigate = useNavigate();
+  const loginStatus = useSelector(selectIsLoggedIn);
 
   const [ resetmanagementCourse, resetCourseInfo ] = useCourseReset();
 
@@ -30,8 +33,8 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
 
   const onClickCreateCourse = useCallback(() => {
     const courseDateSpotIds = managementCourse.dateSpots.map((dateSpot) => dateSpot.id);
+    // 作成者はサーバー側がトークンから決めるため userId は送らない
     const course = {
-      userId: managementCourse.userId,
       dateSpots: courseDateSpotIds,
       travelMode: getCourseInfo.travelMode,
       authority: getCourseInfo.authority
@@ -46,6 +49,12 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
     });
   }, [ managementCourse, getCourseInfo, resetCourseInfo, resetmanagementCourse, navigate ]);
 
+  // 未ログインの場合はログインへ誘導する。
+  // 組み立て中のコースは redux-persist に残るため、ログイン後そのまま登録できる。
+  const onClickLoginToCreateCourse = useCallback(() => {
+    navigate('/login', {state: {message: 'デートコースを登録するにはログインが必要です', type: 'error-message', condition: true}});
+  }, [navigate]);
+
   const onClickSearchDateSpot = useCallback(() => {
     navigate('/dateSpots/index');
   }, [navigate]);
@@ -58,7 +67,12 @@ export const ManagementCourseButtonArea: FC<Props> = memo((props) => {
       {managementCourse.dateSpots && managementCourse.dateSpots.length > 1 && (
         <>
           <ButtonParentDiv>
-            <BaseButton onClickEvent={onClickCreateCourse}>登録</BaseButton>
+            {
+              loginStatus?
+              <BaseButton dataE2e='course-create-button' onClickEvent={onClickCreateCourse}>登録</BaseButton>
+              :
+              <BaseButton dataE2e='course-login-to-create-button' onClickEvent={onClickLoginToCreateCourse}>ログインして登録</BaseButton>
+            }
           </ButtonParentDiv>
           <ButtonParentDiv>
             <DangerButton onClickEvent={onClickAllDelete}>全て削除</DangerButton>

@@ -3,7 +3,7 @@ import { setCurrentUser, setToken } from 'reducers/loginSlice';
 import { SignInParams, User } from 'types/users/session';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 
 export const useLoginAuthAction = (signInParams: SignInParams) => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export const useLoginAuthAction = (signInParams: SignInParams) => {
   }
 
   const loginAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    client.post('login', { signInParams })
+    axiosInstance.post('login', { signInParams })
       .then(response => {
         afterLoginSuccess(response.data.user, response.data.token);
       })

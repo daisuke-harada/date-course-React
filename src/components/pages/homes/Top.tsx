@@ -8,7 +8,7 @@ import { Genres } from 'components/organisms/card/homes/Genres';
 import { Loading } from 'components/pages/Loading';
 import { MainGenre } from 'components/organisms/card/homes/MainGenre';
 import { MainPrefecture } from 'components/organisms/card/homes/MainPrefecture';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import tw from 'tailwind-styled-components';
@@ -26,7 +26,7 @@ export const Top: FC = memo(() => {
 
 
   useEffect(() => {
-    client.get('top').then((response) => {
+    axiosInstance.get('top').then((response) => {
       setAreas(response.data.areas);
       setGenres(response.data.genres);
       setMainGenres(response.data.mainGenres);

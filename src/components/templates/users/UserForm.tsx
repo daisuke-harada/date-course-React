@@ -9,7 +9,7 @@ import { RadioArea } from 'components/organisms/area/RadioArea';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
 import axiosInstance from 'lib/axiosInstance';
-import { formDataClient } from 'lib/api/client';
+import { formDataInstance } from 'lib/axiosInstance';
 import { setCurrentUser } from 'reducers/loginSlice';
 import tw from 'tailwind-styled-components';
 
@@ -77,7 +77,7 @@ export const UserForm: FC<Props> = memo((props) => {
     const user = createFormData();
     // 新規登録機能の際の挙動
     if (afterLoginSuccess !== undefined){
-      formDataClient.post('signup', user).then(response => {
+      formDataInstance.post('signup', user).then(response => {
         afterLoginSuccess !== undefined && afterLoginSuccess(response.data.user);
       }).catch(error => {
         setErrorMessages(error.response.data.errorMessages);

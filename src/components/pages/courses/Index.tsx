@@ -5,7 +5,7 @@ import { CourseSortSearchBar } from 'components/organisms/searchs/CourseSortSear
 import { Courses } from 'components/templates/courses/Courses';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { MultiBar } from 'components/organisms/searchs/MultiBar';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { defaultUserResponseData } from 'datas/defaultUserData';
 import { useSearchParams } from 'react-router-dom';
@@ -26,7 +26,7 @@ export const Index: FC = memo(() => {
   useEffect(() => {
     const params: Record<string, string> = {};
     if (searchParams.get('prefecture_id')) params.prefecture_id = searchParams.get('prefecture_id')!;
-    client.get('courses', { params }).then((response) => {
+    axiosInstance.get('courses', { params }).then((response) => {
       setCourses(response.data);
     });
   }, [searchParams]);

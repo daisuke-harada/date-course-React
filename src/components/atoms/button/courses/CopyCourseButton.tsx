@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reducers';
 import { SecondaryButton } from "../SecondaryButton";
 import { User } from 'types/users/session';
-import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -19,8 +18,9 @@ export const CopyCourseButton: FC<Props> = memo((props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser)
-  const loginStatus = useSelector(selectIsLoggedIn);
 
+  // 既存コースを下敷きにして自分のコースを組み立てる。未ログインでも操作でき、
+  // 登録の時点でログインを求める。
   const onClickAddCourseAction = () => {
       dispatch(setManagementCourse({userId: currentUser.id, dateSpots: managementCourse.dateSpots}))
       dispatch(setCourseInfo({travelMode: courseInfo.travelMode, authority: courseInfo.authority, noDuplicatePrefectureNames: courseInfo.noDuplicatePrefectureNames }))
@@ -28,13 +28,6 @@ export const CopyCourseButton: FC<Props> = memo((props) => {
   };
 
   return(
-    <>
-      {
-        loginStatus
-        && currentUser.admin === false
-        &&
-        (<SecondaryButton dataE2e="copy-course-button" onClickEvent={onClickAddCourseAction}>新しいコース作成</SecondaryButton>)
-      }
-    </>
+    <SecondaryButton dataE2e="copy-course-button" onClickEvent={onClickAddCourseAction}>新しいコース作成</SecondaryButton>
   );
 });

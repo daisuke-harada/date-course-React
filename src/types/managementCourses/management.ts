@@ -2,6 +2,7 @@ import { DateSpotData } from 'types/dateSpots/response';
 import { UserResponseData } from 'types/users/response';
 
 export type ManagementCourseData = {
+  // 画面表示用。登録リクエストには使わない（作成者はサーバー側がトークンから決める）
   userId: number,
   user?: UserResponseData,
   dateSpots: DateSpotData[]

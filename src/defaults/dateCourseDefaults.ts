@@ -10,7 +10,7 @@ export const initialManagementCourse: ManagementCourseData = {
 };
 
 export const initialCourseInfo: CourseInfoData = {
-  travelMode: 'DRIVEING',
+  travelMode: 'DRIVING',
   authority: '非公開',
   noDuplicatePrefectureNames: [],
 };

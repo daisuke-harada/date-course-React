@@ -5,7 +5,7 @@ import { MultiBar } from 'components/organisms/searchs/MultiBar';
 import { UserNameSearchBar } from 'components/organisms/searchs/UserNameSearchBar';
 import { UserResponseData } from 'types/users/response';
 import { Users } from 'components/templates/users/Users';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import { defaultUserResponseData } from 'datas/defaultUserData';
 import { useSearchParams } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ export const Index: FC = memo(() => {
   useEffect(() => {
     const params: Record<string, string> = {};
     if (userSearchName) params.name = userSearchName;
-    client.get('users', { params }).then(response => {
+    axiosInstance.get('users', { params }).then(response => {
       setUsers(response.data);
     });
   }, [userSearchName]);

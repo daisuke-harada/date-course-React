@@ -4,7 +4,10 @@ import { AddCourseButton } from 'components/atoms/button/courses/AddCourseButton
 import { DateSpotData } from 'types/dateSpots/response';
 import { Card } from 'components/atoms/card/Card';
 import { Link } from 'react-router-dom';
+import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
 import { StarRateText } from 'components/atoms/text/StarRateText';
+import { REVIEWS_ENABLED } from 'config/features';
+import { displayableImageUrl } from 'lib/imageUrl';
 import { genreDatas } from 'datas/genreDatas';
 import tw from 'tailwind-styled-components';
 
@@ -23,7 +26,8 @@ export const DateSpotCard: FC<Props> = memo((props) => {
   const genre = genreDatas.find(genreData => genreData.id === dateSpot.genreId);
 
   useEffect(() => {
-    dateSpot.image && dateSpot.image.url && setImage(dateSpot.image.url);
+    const imageUrl = displayableImageUrl(dateSpot.image?.url);
+    imageUrl && setImage(imageUrl);
   }, [dateSpot]);
 
   return(
@@ -40,14 +44,18 @@ export const DateSpotCard: FC<Props> = memo((props) => {
           </div>
         </Link>
       </Title>
-      <div className='flex justify-center'>
-        <StarRateText rate={dateSpot.averageRate} size={24} />
-      </div>
-      <DD>
-        <Link to={`/dateSpots/${dateSpot.id}`}>
-          レビュー{dateSpot.reviewTotalNumber}件
-        </Link>
-      </DD>
+      {REVIEWS_ENABLED && (
+        <>
+          <div className='flex justify-center'>
+            <StarRateText rate={dateSpot.averageRate} size={24} />
+          </div>
+          <DD>
+            <Link to={`/dateSpots/${dateSpot.id}`}>
+              レビュー{dateSpot.reviewTotalNumber}件
+            </Link>
+          </DD>
+        </>
+      )}
       <DD>
         <div className='pb-2 overflow-x-scroll whitespace-nowrap'>
           {dateSpot.cityName}
@@ -58,6 +66,7 @@ export const DateSpotCard: FC<Props> = memo((props) => {
           {genre?.name}
         </Link>
       </DD>
+      <DD><SpotExternalLink dateSpot={dateSpot} /></DD>
       <DD><AddCourseButton dateSpot={dateSpot} /></DD>
     </Card>
   );

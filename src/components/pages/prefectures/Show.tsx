@@ -8,17 +8,16 @@ import { MultiBar } from 'components/organisms/searchs/MultiBar';
 import { DateSpots } from 'components/templates/dateSpots/DateSpots';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 
 export const Show: FC = memo(() => {
   const [dateSpots, setDateSpots] = useState<DateSpotData[]>([defaultDateSpot]);
   const { id } = useParams();
 
   useEffect(() => {
-    client.get(`prefectures/${id}`).then(response => {
-      console.log(response)
-      console.log(response.data)
-      setDateSpots(response.data);
+    axiosInstance.get(`prefectures/${id}`).then(response => {
+      setDateSpots(response.data.map(toFlatDateSpot));
     })
   }, [id]);
 

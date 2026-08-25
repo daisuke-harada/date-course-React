@@ -6,7 +6,6 @@ import { DateSpotData } from 'types/dateSpots/response';
 import { ManagementCourseData } from 'types/managementCourses/management';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
-import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import { setManagementCourse } from 'reducers/currentDateCourseSlice';
 import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +21,13 @@ export const AddCourseButton: FC<Props> = memo((props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector<RootState, User>(state => state.session.currentUser);
-  const loginStatus = useSelector(selectIsLoggedIn);
   const managementCourse = useSelector<RootState, ManagementCourseData>(state => state.currentDateCourse.managementCourse)
+
   const onClickAddCourseAction = () => {
-    // 以下の2つの条件を満たしている場合のみデートコースにデートスポットを追加することができる
-    // ・DuringSpotsの中にdateSpotのdateSpot.idが入っていない場合。
-    if(managementCourse.userId === 0){
+    // 作りかけのコースが無ければ新規に作る。
+    // 未ログインだと currentUser.id が 0 のままなので、userId ではなく
+    // デートスポットの有無で新規かどうかを判定する。
+    if(managementCourse.dateSpots.length === 0){
       dispatch(setManagementCourse({userId: currentUser.id, dateSpots: [dateSpot]}))
       navigate('/managementCourse/createCourse');
     } else if(managementCourse.dateSpots.some(spot => spot.id === dateSpot.id)){
@@ -41,17 +41,8 @@ export const AddCourseButton: FC<Props> = memo((props) => {
   };
 
   return(
-    <>
-      {
-        loginStatus
-        && currentUser.admin === false
-        &&
-        (
-        <ButtonParentDiv>
-          <BaseButton dataE2e={`courseAddButtonId-${dateSpot.id}`} onClickEvent={onClickAddCourseAction}>デートコースに追加</BaseButton>
-        </ButtonParentDiv>
-        )
-      }
-    </>
+    <ButtonParentDiv>
+      <BaseButton dataE2e={`courseAddButtonId-${dateSpot.id}`} onClickEvent={onClickAddCourseAction}>デートコースに追加</BaseButton>
+    </ButtonParentDiv>
   );
 });

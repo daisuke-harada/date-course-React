@@ -9,7 +9,7 @@ import { RadioArea } from 'components/organisms/area/RadioArea';
 import { RootState } from 'reducers';
 import { User } from 'types/users/session';
 import axiosInstance from 'lib/axiosInstance';
-import { formDataClient } from 'lib/api/client';
+import { formDataInstance } from 'lib/axiosInstance';
 import { setCurrentUser } from 'reducers/loginSlice';
 import tw from 'tailwind-styled-components';
 
@@ -68,7 +68,10 @@ export const UserForm: FC<Props> = memo((props) => {
     formData.append('email', email);
     formData.append('gender', gender);
     formData.append('password', password);
-    formData.append('passwordConfirmation', passwordConfirmation);
+    // FormData は axios-case-converter のキャメル→スネーク変換の対象外なので、
+    // サーバーが読むキー名（password_confirmation）で直接積む。
+    // camelCase のまま送ると Go 側では空文字になり「パスワード（確認）が一致しません」になる。
+    formData.append('password_confirmation', passwordConfirmation);
     image && formData.append('image', image);
     return formData;
   };
@@ -77,7 +80,7 @@ export const UserForm: FC<Props> = memo((props) => {
     const user = createFormData();
     // 新規登録機能の際の挙動
     if (afterLoginSuccess !== undefined){
-      formDataClient.post('signup', user).then(response => {
+      formDataInstance.post('signup', user).then(response => {
         afterLoginSuccess !== undefined && afterLoginSuccess(response.data.user);
       }).catch(error => {
         setErrorMessages(error.response.data.errorMessages);

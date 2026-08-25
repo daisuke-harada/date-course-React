@@ -18,7 +18,10 @@ export const MainGenre: FC<Props> = memo((props) => {
   return(
     <Link to={`/genres/${genre.id}`} className='md:w-3/12 md:h-60 bg-white rounded-xl shadow-lg m-4 h-20 border w-1/3 flex hover:scale-105 duration-300' >
       <ImageParentDiv>
-        <Image src={`${process.env.PUBLIC_URL}/genreImages/${genre.name}.jpg`} />
+        <Image
+          src={`${process.env.PUBLIC_URL}/genreImages/${genre.name}.jpg`}
+          onError={(e) => { e.currentTarget.src = `${process.env.PUBLIC_URL}/no_image.jpg`; }}
+        />
       </ImageParentDiv>
       <div className='md:text-left text-center w-6/12'>
         {/* <%= link_to genre.name, {:controller=>'date_spots',:action=>'index',:date_spot_search=>{:genre_id_eq=>'#{genre.id}'}}, as: :date_spot_search, className:'md:text-xl sm:p-1 text-xs text-black font-bold' %> */}

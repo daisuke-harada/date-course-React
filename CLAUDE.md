@@ -27,7 +27,7 @@ src/
 ├── router/           # ルーティング定義
 ├── reducers/         # Redux スライス・ストア
 ├── hooks/            # カスタムフック
-├── lib/api/          # Axiosクライアント設定
+├── lib/              # Axiosクライアント設定
 ├── types/            # TypeScript型定義
 ├── datas/            # マスターデータ（都道府県・ジャンルなど）
 └── defaults/         # Reduxステート初期値
@@ -137,6 +137,17 @@ React Router v6を使用。機能ドメインごとにファイルを分割。
 
 `session`と`currentDateCourse`はどちらもlocalStorageに永続化される。
 
+ただし「まだ何も起きていない状態」は書き込まない。`index.ts` の transform
+（`skipEmptySession` / `skipEmptyDateCourse`）が inbound で `undefined` を返し、
+redux-persist が該当キーを保存対象から外す。
+
+| 対象 | 保存されない条件 |
+|-----|---------------|
+| `session` | 未ログイン（`loginStatus === false` かつ `token === ''`） |
+| `currentDateCourse` | スポット未選択（`dateSpots` が id: 0 のダミーのみ）かつ `courseInfo` が初期値 |
+
+これがないと、ユーザーがlocalStorageを手動で消しても空のレコードが再生成され続ける。
+
 ---
 
 ### hooks/ — カスタムフック
@@ -152,13 +163,14 @@ React Router v6を使用。機能ドメインごとにファイルを分割。
 
 ---
 
-### lib/api/ — APIクライアント
+### lib/ — APIクライアント
 
-`client.ts`でAxiosインスタンスを2つ公開。
+`axiosInstance.ts`でAxiosインスタンスを2つ公開。どちらもトークン付与と
+セッション切れ検知のインターセプタを持つ。
 
 ```typescript
-client          // JSON通信（Content-Type: application/json）
-formDataClient  // ファイルアップロード（Content-Type: multipart/form-data）
+axiosInstance     // JSON通信（デフォルトエクスポート）
+formDataInstance  // ファイルアップロード（Content-Type: multipart/form-data）
 ```
 
 `axios-case-converter`により、リクエスト時にキャメルケース→スネークケース、レスポンス時にスネークケース→キャメルケースへ自動変換される。
@@ -218,7 +230,8 @@ Redux Storeの初期状態を定義するファイル。Storeのsetup時・reset
 |-----|------|
 | デートスポット作成・編集 | `currentUser.admin === true` |
 | ユーザープロフィール編集 | `Number(userId) === currentUser.id` |
-| コース作成 | `loginStatus === true` |
+| コース作成（組み立て） | 誰でも可（未ログインを含む） |
+| コース登録（POST /courses） | `loginStatus === true`。未ログインは「ログインして登録」でログインへ誘導 |
 | 条件不満時の挙動 | `<Navigate to="/" />` + エラーフラッシュメッセージ |
 
 ## 開発コマンド
@@ -246,12 +259,21 @@ yarn test    # テスト実行（craco test）
 
 ## API 通信ルール
 
-認証が必要なエンドポイントには必ず `axiosInstance`（`src/lib/axiosInstance.ts`）を使用する。
-`client` / `formDataClient`（`src/lib/api/client.ts`）は認証ヘッダーを付与しないため、
-`authenticate_user!` が設定されている Rails エンドポイントへの呼び出しには使用しない。
+API 呼び出しは **すべて `axiosInstance`（`src/lib/axiosInstance.ts`）を使う**。
+認証の要否で使い分けない。認証不要な GET でも、非公開のデートコースを作成者に
+返すためにサーバー側が「誰が見ているか」を必要とするため、トークンは一律で付ける。
 
 | クライアント | 用途 |
 |-----------|------|
-| `axiosInstance` | 認証が必要なエンドポイント（Bearer トークン自動付与） |
-| `client` | 認証不要なエンドポイント（GET /top, GET /date_spots など） |
-| `formDataClient` | 使用しない（axiosInstance に `content-type: multipart/form-data` ヘッダーを渡す） |
+| `axiosInstance` | すべての JSON 通信（デフォルトエクスポート） |
+| `formDataInstance` | multipart/form-data で送る場合（画像アップロードなど） |
+
+### インターセプタ
+
+| 種類 | 動作 |
+|-----|------|
+| リクエスト | ログイン中なら `Authorization: Bearer <token>` を付与 |
+| レスポンス | **トークンを付けて送ったのに** 401 が返ったらセッション切れとみなし、`clearAuth()` して `/login` へ遷移 |
+
+401 の条件に「トークンを付けたか」を含めているのは、**ログイン失敗も 401 を返す**ため。
+条件を付けないと、ログイン失敗時に強制遷移してエラーメッセージを表示できなくなる。

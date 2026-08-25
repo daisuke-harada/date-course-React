@@ -3,7 +3,7 @@ import { setCurrentUser, setToken } from 'reducers/loginSlice';
 import { SignInParams, User } from 'types/users/session';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 
 export const useLoginAuthAction = (signInParams: SignInParams) => {
   const dispatch = useDispatch();
@@ -20,7 +20,9 @@ export const useLoginAuthAction = (signInParams: SignInParams) => {
   }
 
   const loginAction: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    client.post('login', { signInParams })
+    // Go バックエンドは name / password をトップレベルで受け取る（Rails の
+    // sign_in_params ネストは廃止された）。ネストして送ると 422 でログインできない。
+    axiosInstance.post('login', signInParams)
       .then(response => {
         afterLoginSuccess(response.data.user, response.data.token);
       })

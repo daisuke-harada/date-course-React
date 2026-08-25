@@ -6,7 +6,8 @@ import { DateSpotSortSearchBar } from 'components/organisms/searchs/DateSpotSort
 import { DateSpots } from 'components/templates/dateSpots/DateSpots';
 import { IndexLayout } from 'components/templates/layouts/IndexLayouts';
 import { MultiBar } from 'components/organisms/searchs/MultiBar';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { useSearchParams } from 'react-router-dom';
 
@@ -26,8 +27,8 @@ export const Index: FC = memo(() => {
     if (comeTime) params.come_time = comeTime;
     if (dateSpotSearchName) params.date_spot_name = dateSpotSearchName;
 
-    client.get('date_spots', { params }).then(response => {
-      setDateSpots(response.data);
+    axiosInstance.get('date_spots', { params }).then(response => {
+      setDateSpots(response.data.map(toFlatDateSpot));
     });
   }, [prefectureId, genreId, comeTime, dateSpotSearchName]);
 

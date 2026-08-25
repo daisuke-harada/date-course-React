@@ -1,7 +1,7 @@
 import { FC, memo, useState } from 'react';
 
 import { BaseButton } from 'components/atoms/button/BaseButton';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
 import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ export const UserAndDateSpotSearchBar: FC = memo(() => {
     if (searchTarget === 'User') {
       navigate(`/users/index?name=${encodeURIComponent(name)}`);
     } else {
-      client.get('date_spots', { params: { name } }).then(response => {
+      axiosInstance.get('date_spots', { params: { name } }).then(response => {
         navigate('/dateSpots/search', { state: { dateSpots: response.data } });
       });
     }

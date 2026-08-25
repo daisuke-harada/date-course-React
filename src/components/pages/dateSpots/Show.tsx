@@ -10,7 +10,11 @@ import { Loading } from '../Loading';
 import { RootState } from 'reducers';
 import { StarRateText } from 'components/atoms/text/StarRateText';
 import { User } from 'types/users/session';
-import { client } from 'lib/api/client';
+import axiosInstance from 'lib/axiosInstance';
+import { toFlatDateSpot } from 'lib/api/dateSpotMapper';
+import { SpotExternalLink } from 'components/atoms/Link/SpotExternalLink';
+import { REVIEWS_ENABLED } from 'config/features';
+import { displayableImageUrl } from 'lib/imageUrl';
 import { defaultDateSpot } from 'datas/defaultDateSpotData';
 import { selectIsLoggedIn } from 'reducers/selectors/authSelectors';
 import tw from 'tailwind-styled-components';
@@ -36,10 +40,11 @@ export const Show: FC = memo(() => {
   const loginStatus = useSelector(selectIsLoggedIn)
 
   useEffect(() => {
-    client.get(`date_spots/${id}`).then(response => {
-      const spot = response.data.dateSpot;
+    axiosInstance.get(`date_spots/${id}`).then(response => {
+      const spot = toFlatDateSpot(response.data.dateSpot);
       setDateSpot(spot);
-      spot?.image?.url !== null && spot?.image?.url && setDateSpotImage(spot.image.url);
+      const imageUrl = displayableImageUrl(spot?.image?.url);
+      imageUrl && setDateSpotImage(imageUrl);
       setDateSpotReviews(response.data.dateSpotReviews);
       setDateSpotAverageRate(response.data.reviewAverageRate);
     });
@@ -54,10 +59,12 @@ export const Show: FC = memo(() => {
               <Image src={dateSpotImage} alt='DateSpotProfileImage' />
             </ImageParentDiv>
             <DateSpotNameTitle>{dateSpot?.name}</DateSpotNameTitle>
-            <div className='flex flex-col'>
-              <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
-              <StarRateText rate={dateSpotAverageRate} size={50} />
-            </div>
+            {REVIEWS_ENABLED && (
+              <div className='flex flex-col'>
+                <div className='ml-1 font-bold'>評価{dateSpotAverageRate}</div>
+                <StarRateText rate={dateSpotAverageRate} size={50} />
+              </div>
+            )}
             <div className='mx-2 my-5 text-sm font-bold md:text-xl'>
               {dateSpot?.cityName}
             </div>
@@ -65,6 +72,9 @@ export const Show: FC = memo(() => {
               <Link to={`/genres/${dateSpot?.genreId}`}>
                 {dateSpot?.genreName}
               </Link>
+            </div>
+            <div className='mx-2 my-5 text-center'>
+              <SpotExternalLink dateSpot={dateSpot} />
             </div>
             <div className='lg:text-base md:mx-0 mobile(L):w-1/2 m-auto text-xs text-center mb-5'>
               <AddCourseButton dateSpot={dateSpot}/>
@@ -97,18 +107,20 @@ export const Show: FC = memo(() => {
         </SubDiv>
       </MainDiv>
 
-      <MainDiv>
-        {
-          dateSpot
-          &&
-          <DateSpotReviewArea
-            dateSpotId={dateSpot.id}
-            dateSpotReviews={dateSpotReviews}
-            setDateSpotReviews={setDateSpotReviews}
-            setDateSpotAverageRate={setDateSpotAverageRate}
-          />
-        }
-      </MainDiv>
+      {REVIEWS_ENABLED && (
+        <MainDiv>
+          {
+            dateSpot
+            &&
+            <DateSpotReviewArea
+              dateSpotId={dateSpot.id}
+              dateSpotReviews={dateSpotReviews}
+              setDateSpotReviews={setDateSpotReviews}
+              setDateSpotAverageRate={setDateSpotAverageRate}
+            />
+          }
+        </MainDiv>
+      )}
     </Loading>
   );
 });
